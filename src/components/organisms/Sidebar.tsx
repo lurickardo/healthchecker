@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Lock, LockOpen } from "lucide-react";
 import { menuIcons, menuLinks } from "../molecules/sidebar/menus/menu.links";
 import Image from "../atoms/Image";
+import Link from "../atoms/Link";
 
 export default function SideBar() {
   const [open, setOpen] = useState(false);
@@ -62,22 +63,36 @@ export default function SideBar() {
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
       >
-        <div className="flex items-center space-x-4 p-6 pl-4 pb-0">
-          <Image src="/favicon.png" alt="Icon Sidebar" className="w-10 h-10" />
-          {showContent && <h1 className="text-white text-lg">Healthchecker</h1>}
+        <div className="flex items-center space-x-4 p-4 pb-0">
+          <Link
+            icon={
+              <Image
+                src="/favicon.png"
+                alt="Icon Sidebar"
+                className="w-10 h-9"
+              />
+            }
+            label={showContent ? "Healthchecker" : ""}
+            labelClassName="text-white text-lg"
+            href="/"
+          ></Link>
         </div>
 
         <div
-          className={`flex-1 overflow-auto ${showContent ? "block" : "hidden"}`}
+          className={`flex-1 overflow-auto pt-[0.9rem] ${
+            showContent ? "block" : "hidden"
+          }`}
         >
-          <ul className="">
+          <ul>
             {menuLinks().map((link) => (
               <li key={link.key}>{link.prop}</li>
             ))}
           </ul>
         </div>
         <div
-          className={`flex-1 overflow-auto ${showContent ? "hidden" : "block"}`}
+          className={`flex-1 overflow-auto pt-4 ${
+            showContent ? "hidden" : "block"
+          }`}
         >
           <ul className="">
             {menuIcons().map((link) => (

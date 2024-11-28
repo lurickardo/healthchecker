@@ -10,23 +10,18 @@ interface optionsInterface {
 
 const options: optionsInterface[] = [
   {
-    key: "instances",
-    label: "Instances",
-    href: "/bvm/instances",
+    key: "dashboard",
+    label: "Dashboard",
+    href: "/healthcheck/dashboard",
   },
   {
-    key: "keypair",
-    label: "Key Pair",
-    href: "/bvm/keypair",
-  },
-  {
-    key: "images",
-    label: "Machine Images",
-    href: "/bvm/images",
+    key: "synthetictests",
+    label: "Systhetic Tests",
+    href: "/healthcheck/synthetictests",
   },
 ];
 
-export const bvmOptions = ({ pathname }: optionsProps) => {
+export const healthcheckOptions = ({ pathname }: optionsProps) => {
   return options.map((option) => {
     return {
       key: option.key,
@@ -39,7 +34,7 @@ export const bvmOptions = ({ pathname }: optionsProps) => {
               pathname,
               option.href,
               "text-hc-green-100"
-            )} hover:text-hc-green-100 font-poppins text-lg pl-6 font-normal`}
+            )} hover:text-hc-green-100 font-poppins text-lg pl-4 font-normal`}
           />
         </>
       ),

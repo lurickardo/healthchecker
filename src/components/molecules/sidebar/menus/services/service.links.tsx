@@ -1,7 +1,7 @@
 import Image from "@/components/atoms/Image";
 import { usePathname } from "next/navigation";
 import Link from "../../../../atoms/Link";
-import { bvmOptions } from "./bvm/optionsLinks";
+import { healthcheckOptions } from "./healthcheck/healthcheckOptions.links";
 import { markPage, routeLayer } from "@/utils/utils";
 import { ChevronDown, ChevronRight, HeartPulse } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ const services: serviceInterface[] = [
       className: "h-6",
     },
     option: {
-      optionsLinks: bvmOptions,
+      optionsLinks: healthcheckOptions,
       open: false,
       haveContent: true,
     },
@@ -96,7 +96,7 @@ export const servicesLinks = () => {
                 service.href || "#",
                 "text-hc-green-300"
               )} hover:text-hc-green-300 font-poppins text-lg pl-6 font-normal`}
-              labelClassName={"pl-4"}
+              labelClassName={"pl-2"}
             />
             {hasContent ? isOpen ? <ChevronDown /> : <ChevronRight /> : ""}
           </div>
