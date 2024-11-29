@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import Select from "../atoms/Select";
 
@@ -43,6 +45,11 @@ export default function Filter() {
           className="w-24"
         />
       </div>
+      <Button
+        className="flex items-center whitespace-nowrap hover:bg-hc-black-200 border-2 border-hc-green-300 font-semibold text-xl rounded"
+        label="Buscar"
+        icon={<Search />}
+      />
     </form>
   );
 }
