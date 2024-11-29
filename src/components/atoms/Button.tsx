@@ -21,7 +21,7 @@ export default function Button({
   return (
     <button
       type={type}
-      className={`px-2 py-2 text-lg space-x-2 cursor-pointer ${
+      className={`px-2 py-2 text-lg space-x-2 cursor-pointer h-10 ${
         className || ""
       }`}
       disabled={isSubmitting}

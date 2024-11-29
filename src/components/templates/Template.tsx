@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import SideBar from "../organisms/Sidebar";
 
 interface TemplateProps {
@@ -5,14 +8,20 @@ interface TemplateProps {
 }
 
 export default function Template({ children }: TemplateProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <>
-      <main className="flex gap-10 pr-10 min-h-screen bg-wave bg-no-repeat bg-bottom bg-contain text-lg">
-        <SideBar />
+      <main className="flex gap-10 min-h-screen bg-wave bg-no-repeat bg-bottom bg-contain text-lg">
+        <SideBar onSidebarStateChange={setSidebarOpen} />
         <div
-          className={`w-authenticated pt-20 pl-4 pr-12 transition-all duration-300 ease-in-out`}
+          className={`pl-4 transition-all duration-300 ease-in-out mt-6 ${
+            sidebarOpen ? "w-sideBarOpen ml-[-1rem]" : "w-default ml-0"
+          }`}
         >
-          {children}
+          <div className="bg-hc-black-400 border-2 border-gray-600 rounded p-4">
+            {children}
+          </div>
         </div>
       </main>
     </>

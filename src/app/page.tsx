@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/healthcheck/dashboard");
+    router.push("/healthcheck/synthetictests");
   }, []);
 
   return (

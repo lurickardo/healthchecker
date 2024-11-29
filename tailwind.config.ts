@@ -64,7 +64,7 @@ const config = {
 				"hc-green-500": "#6E9319",
 				"hc-green-400": "#87AE2D",
 				"hc-green-300": "#A2D729",
-				"hc-green-100": "#9EE493",
+				"hc-green-100": "#b8ffad",
 
 				"hc-red-400": "#991B1B",
 				"hc-red-300": "#B91C1C",
@@ -135,10 +135,11 @@ const config = {
 			},
 			height: {
 				"grid-rows-sidebar": "calc(100vh - 4rem)",
-				"table": "calc(100vh - 22rem)",
+				"table": "calc(100vh - 14rem)",
 			},
 			width: {
-				"authenticated": "calc(100vw - 12rem)",
+				"default": "calc(100vw - 7.5rem)",
+				"sideBarOpen": "calc(100vw - 22.5rem)",
 			}
 		},
 	},

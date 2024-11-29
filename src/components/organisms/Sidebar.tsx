@@ -6,7 +6,11 @@ import { menuIcons, menuLinks } from "../molecules/sidebar/menus/menu.links";
 import Image from "../atoms/Image";
 import Link from "../atoms/Link";
 
-export default function SideBar() {
+interface SideBarProps {
+  onSidebarStateChange?: (isOpen: boolean) => void;
+}
+
+export default function SideBar({ onSidebarStateChange }: SideBarProps) {
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -28,17 +32,20 @@ export default function SideBar() {
     } else {
       setShowContent(false);
     }
-  }, [open]);
+    onSidebarStateChange?.(open);
+  }, [open, onSidebarStateChange]);
 
   const handleOpen = () => {
     if (!pinned) {
       setOpen(true);
+      onSidebarStateChange?.(true);
     }
   };
 
   const handleClose = () => {
     if (!pinned) {
       setOpen(false);
+      onSidebarStateChange?.(false);
     }
   };
 
@@ -53,7 +60,7 @@ export default function SideBar() {
   return (
     <section
       className={`pt-12 pl-1 pr-12 transition-all duration-300 ease-in-out ${
-        open ? "ml-64" : "ml-16"
+        open ? "ml-64" : ""
       }`}
     >
       <div
