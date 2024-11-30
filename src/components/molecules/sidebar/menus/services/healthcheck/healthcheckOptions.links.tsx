@@ -19,6 +19,11 @@ const options: optionsInterface[] = [
     label: "Systhetic Tests",
     href: "/healthcheck/synthetictests",
   },
+  {
+    key: "variables",
+    label: "Variables",
+    href: "/healthcheck/variables",
+  },
 ];
 
 export const healthcheckOptions = ({ pathname }: optionsProps) => {

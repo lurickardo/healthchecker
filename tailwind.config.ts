@@ -77,6 +77,8 @@ const config = {
 				"hc-blue-400": "#554dff",
 				"hc-blue-100": "#6d68ff",
 
+
+				"hc-white-300": "#efefef",
 				"hc-white-200": "#F2F2F2",
 				"hc-white-100": "#FFFFFF",
 
@@ -138,7 +140,7 @@ const config = {
 				"table": "calc(100vh - 14rem)",
 			},
 			width: {
-				"default": "calc(100vw - 7.5rem)",
+				"default": "calc(100vw - 8rem)",
 				"sideBarOpen": "calc(100vw - 22.5rem)",
 			}
 		},

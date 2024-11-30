@@ -33,7 +33,7 @@ export default function Input({
       type={type}
       value={value}
       placeholder={placeholder}
-      className={`bg-white text-black rounded px-2 py-2 text-lg w-full h-10 ${className}`}
+      className={`focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg w-full h-10 ${className}`}
       onChange={onChange}
       onFocus={onFocus}
       onBlur={onBlur}
