@@ -1,31 +1,33 @@
 {
-  "name": "fhealthchecker",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^3.9.1",
-    "lucide-react": "^0.460.0",
-    "next": "15.0.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-hook-form": "^7.53.2",
-    "react-syntax-highlighter": "^15.6.1",
-    "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+	"name": "healthchecker",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "npx @biomejs/biome format ./ --write",
+		"lint:check": "npx @biomejs/biome check ./src"
+	},
+	"dependencies": {
+		"@hookform/resolvers": "^3.9.1",
+		"lucide-react": "^0.460.0",
+		"next": "15.0.3",
+		"react": "18.3.1",
+		"react-dom": "18.3.1",
+		"react-hook-form": "^7.53.2",
+		"react-syntax-highlighter": "^15.6.1",
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"@types/react-syntax-highlighter": "^15.5.13",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5"
+	}
 }

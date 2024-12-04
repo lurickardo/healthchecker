@@ -108,7 +108,7 @@ export default function ResponsePreview() {
             onChange={(e) => {
               setLanguage(e.target.value);
             }}
-            // defaultValue="json"
+            // TODO: defaultValue="json"
             value={language}
           />
         )}
@@ -121,9 +121,9 @@ export default function ResponsePreview() {
           lineNumberStyle={{ color: "#888", marginRight: "0px" }}
           customStyle={{
             borderRadius: "0.25rem",
-            marginTop: "2rem",
-            maxHeight: "38rem",
-            minHeight: "38rem",
+            marginTop: "1rem",
+            maxHeight: "42rem",
+            minHeight: "42rem",
             fontSize: "0.9rem",
           }}
         >
@@ -132,7 +132,7 @@ export default function ResponsePreview() {
       )}
 
       {activeButton === "Preview" && (
-        <div className="mt-8 mb-[0.45rem] h-[38rem] bg-hc-white-100 rounded overflow-hidden">
+        <div className="mt-8 mb-[0rem] h-[41.45rem] bg-hc-white-100 rounded overflow-hidden">
           <iframe
             ref={iframeRef}
             title="HTML Preview"

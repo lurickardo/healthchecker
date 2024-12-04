@@ -5,7 +5,7 @@ import Template from "@/components/templates/Template";
 export default async function Create() {
   return (
     <Template>
-      <section className="flex space-x-2">
+      <section className="flex space-x-4 max-h-[52.1rem]">
         <Request />
         <Visualize />
       </section>

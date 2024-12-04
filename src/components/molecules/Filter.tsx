@@ -46,7 +46,7 @@ export default function Filter() {
         />
       </div>
       <Button
-        className="flex items-center whitespace-nowrap hover:bg-hc-black-200 border-2 border-hc-green-300 font-semibold text-xl rounded"
+        className="flex items-center whitespace-nowrap hover:bg-hc-black-200 border-2 border-hc-green-300 text-xl rounded"
         label="Search"
         icon={<Search />}
       />

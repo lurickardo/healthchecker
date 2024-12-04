@@ -8,7 +8,7 @@ export default function Visualize() {
   const [activeTab, setActiveTab] = useState("Response preview");
 
   return (
-    <div className="justify-start w-5/12 border-gray-600 rounded border-2 p-4 min-h-[49rem]">
+    <div className="justify-start w-5/12 border-gray-600 border-l-2 p-4 min-h-[49rem]">
       <div className="space-x-6 mb-10">
         <span
           className={`whitespace-nowrap p-2 border-b-4 cursor-pointer ${

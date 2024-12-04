@@ -48,13 +48,13 @@ export default async function SyntheticTests() {
       >
         <Button
           label=""
-          className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200"
+          className="bg-hc-black-400 hover:bg-hc-black-200 rounded border-2 border-hc-green-300 text-hc-white-200"
         >
           <ClipboardPen />
         </Button>
         <Button
           label=""
-          className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200"
+          className="bg-hc-black-400 hover:bg-hc-black-200 rounded border-2 border-hc-green-300 text-hc-white-200"
         >
           <Trash2 />
         </Button>
@@ -89,13 +89,13 @@ export default async function SyntheticTests() {
       >
         <Button
           label=""
-          className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200"
+          className="bg-hc-black-400 hover:bg-hc-black-200 rounded border-2 border-hc-green-300 text-hc-white-200"
         >
           <ClipboardPen />
         </Button>
         <Button
           label=""
-          className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200"
+          className="bg-hc-black-400 hover:bg-hc-black-200 rounded border-2 border-hc-green-300 text-hc-white-200"
         >
           <Trash2 />
         </Button>
