@@ -34,7 +34,7 @@ const services: serviceInterface[] = [
     },
     option: {
       optionsLinks: healthcheckOptions,
-      open: false,
+      open: true,
       haveContent: true,
     },
   },

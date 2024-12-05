@@ -1,7 +1,7 @@
 "use client";
 
-import ResponsePreview from "./visualizeTabs/ResponsePreview";
-import Variable from "./visualizeTabs/Variables";
+import ResponsePreview from "./tabs/ResponsePreview";
+import Variable from "./tabs/Variables";
 import { useState } from "react";
 
 export default function Visualize() {
