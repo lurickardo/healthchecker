@@ -100,6 +100,7 @@ export default function ResponsePreview() {
         </div>
         {showSelect && (
           <Select
+            name="typeNotation"
             options={[
               { value: "json", label: "JSON" },
               { value: "xml", label: "XML" },
@@ -108,7 +109,6 @@ export default function ResponsePreview() {
             onChange={(e) => {
               setLanguage(e.target.value);
             }}
-            // TODO: defaultValue="json"
             value={language}
           />
         )}
