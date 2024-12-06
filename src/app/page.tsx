@@ -1,7 +1,6 @@
 "use client";
 
 import Template from "@/components/templates/Template";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
