@@ -1,6 +1,6 @@
 interface CheckboxProps {
   id?: string;
-  name?: string;
+  name: string;
   value?: string;
   placeholder?: string;
   defaultValue?: string;

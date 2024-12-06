@@ -3,6 +3,7 @@ interface CheckboxProps {
   defaultValue?: string;
   className?: string;
   label?: string;
+  name: string;
   labelClassName?: string;
   icon?: React.ReactNode;
   min?: number;
@@ -14,6 +15,7 @@ interface CheckboxProps {
 
 export default function Checkbox({
   label,
+  name,
   placeholder,
   className,
   onChange,
@@ -27,6 +29,7 @@ export default function Checkbox({
     <span>
       <input
         type="checkbox"
+        name={name}
         placeholder={placeholder}
         className={`accent-hc-green-500  focus:outline-hc-green-500 bg-white text-black rounded px-4 mr-1 text-lg h-[1.3rem] w-[1.3rem] align-middle ${className}`}
         onChange={onChange}

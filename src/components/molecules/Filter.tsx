@@ -10,6 +10,7 @@ export default function Filter() {
         <label className="mr-2 whitespace-nowrap">SLA:</label>
         <Input
           type="number"
+          name="sla"
           className="w-20 h-10"
           defaultValue="1"
           min={1}
@@ -19,15 +20,16 @@ export default function Filter() {
       </div>
       <div className="flex items-center">
         <label className="mr-2">From:</label>
-        <Input type="date" className="w-32 h-10" />
+        <Input type="date" name="from" className="w-32 h-10" />
       </div>
       <div className="flex items-center">
         <label className="mr-2">To:</label>
-        <Input type="date" className="w-32 h-10" />
+        <Input type="date" name="to" className="w-32 h-10" />
       </div>
       <div className="flex justify-between items-center">
         <span className="mr-2 whitespace-nowrap">Quick interval:</span>
         <Select
+          name="timeInterval"
           options={[
             { value: "1hr", label: "1hr" },
             { value: "2hr", label: "2hr" },

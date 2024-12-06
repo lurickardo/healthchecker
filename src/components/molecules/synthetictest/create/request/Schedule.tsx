@@ -11,13 +11,13 @@ export default function Schedule() {
       <fieldset className="w-12/12 fields border-2 rounded border-gray-600">
         <legend className="text-xl font-bold">Days of the week:</legend>
         <div className="flex justify-start items-center space-x-4 h-12 p-2">
-          <Checkbox label="Monday" />
-          <Checkbox label="Tuesday" />
-          <Checkbox label="Wednesday" />
-          <Checkbox label="Thursday" />
-          <Checkbox label="Friday" />
-          <Checkbox label="Saturday" />
-          <Checkbox label="Sunday" />
+          <Checkbox name="monday" label="Monday" />
+          <Checkbox name="tuesday" label="Tuesday" />
+          <Checkbox name="wednesday" label="Wednesday" />
+          <Checkbox name="thursday" label="Thursday" />
+          <Checkbox name="friday" label="Friday" />
+          <Checkbox name="saturday" label="Saturday" />
+          <Checkbox name="sunday" label="Sunday" />
         </div>
       </fieldset>
       <div className="flex justify-start space-x-4">
@@ -45,7 +45,13 @@ export default function Schedule() {
         <div className="grid w-2/12">
           <span className="text-xl font-bold">Interval:</span>
           <div className="flex space-x-2">
-            <Input type="number" min={1} max={1440} className="w-28" />
+            <Input
+              type="number"
+              name="interval"
+              min={1}
+              max={1440}
+              className="w-28"
+            />
           </div>
         </div>
       </div>

@@ -41,6 +41,7 @@ export default function Headers() {
                 <td className="p-2">
                   <Input
                     type="text"
+                    name={`headerKey-${index}`}
                     placeholder="Key"
                     value={param.key}
                     onChange={(e) =>
@@ -52,6 +53,7 @@ export default function Headers() {
                 <td className="p-2">
                   <Input
                     type="text"
+                    name={`headerValue-${index}`}
                     placeholder="Value"
                     value={param.value}
                     onChange={(e) =>

@@ -7,6 +7,7 @@ export default function Url() {
   return (
     <div className="flex space-x-2 mt-3">
       <Select
+        name="method"
         options={[
           { value: "GET", label: "GET" },
           { value: "POST", label: "POST" },
@@ -18,9 +19,10 @@ export default function Url() {
         ]}
         className="max-w-32 flex justify-center bg-hc-black-500 text-hc-white-100 hover:bg-hc-black-200 border-hc-green-300 border-2 items-center px-2 py-2 font-medium rounded text-center whitespace-nowrap"
       />
-      <Input />
+      <Input name="url" />
       <Button
         label="Send"
+        name="send"
         icon={<SendHorizonal />}
         className="flex justify-center hover:bg-hc-black-200 border-hc-green-300 border-2 items-center px-4 py-2 font-medium rounded text-center whitespace-nowrap"
       />

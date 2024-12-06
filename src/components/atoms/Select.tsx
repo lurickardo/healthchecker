@@ -1,6 +1,7 @@
 interface SelectProps {
   options: { value: string; label: string }[];
   value?: string;
+  name: string;
   placeholder?: string;
   className?: string;
   label?: string;
@@ -12,6 +13,7 @@ interface SelectProps {
 
 export default function Select({
   options,
+  name,
   value,
   placeholder,
   className,
@@ -20,6 +22,7 @@ export default function Select({
 }: SelectProps) {
   return (
     <select
+      name={name}
       value={value}
       onChange={onChange}
       className={`focus:outline-hc-green-500 text-black rounded px-2 py-2 text-lg w-full h-10 ${className}`}
