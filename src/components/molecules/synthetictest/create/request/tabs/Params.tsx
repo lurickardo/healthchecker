@@ -65,6 +65,7 @@ export default function Params() {
                 <td className="p-1">
                   <Button
                     label=""
+                    type="button"
                     onClick={() => handleRemoveParam(index)}
                     className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200 hover:bg-hc-black-200"
                   >

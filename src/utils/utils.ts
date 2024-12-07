@@ -16,3 +16,46 @@ export const formatDateToBR = (dateString: string): string => {
     
     return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
+
+export const transformObject = (
+    keyNames: string[], 
+    prefixKeys: string[], 
+    prefixValues: string[], 
+    obj: any
+) => {
+    if (keyNames.length !== prefixKeys.length || keyNames.length !== prefixValues.length) {
+        throw new Error("The array keyNames, prefixKeys and prefixValues should some element size.");
+    }
+
+    const transformedObject = { ...obj };
+
+    keyNames.forEach((keyName, i) => {
+        const prefixKey = prefixKeys[i];
+        const prefixValue = prefixValues[i];
+        const subObject: any = {};
+
+        for (const key in obj) {
+            if (key.startsWith(prefixKey)) {
+                const index = key.split("-")[1];
+                const valueKey = `${prefixValue}${index}`;
+                if (obj[key] && obj[valueKey]) {
+                    subObject[obj[key]] = obj[valueKey];
+                }
+
+                delete transformedObject[key];
+                delete transformedObject[valueKey];
+            }
+        }
+
+        transformedObject[keyName] = subObject;
+    });
+
+    return transformedObject;
+};
+
+export const transformHttpPrefix = (url: string): string => {
+    if (!/^https?:\/\//i.test(url)) {
+        return `https://${url}`;
+    }
+    return url;
+};

@@ -41,7 +41,7 @@ export default function Headers() {
                 <td className="p-2">
                   <Input
                     type="text"
-                    name={`headerKey-${index}`}
+                    name={`headersKey-${index}`}
                     placeholder="Key"
                     value={param.key}
                     onChange={(e) =>
@@ -53,7 +53,7 @@ export default function Headers() {
                 <td className="p-2">
                   <Input
                     type="text"
-                    name={`headerValue-${index}`}
+                    name={`headersValue-${index}`}
                     placeholder="Value"
                     value={param.value}
                     onChange={(e) =>
@@ -65,6 +65,7 @@ export default function Headers() {
                 <td className="p-1">
                   <Button
                     label=""
+                    type="button"
                     onClick={() => handleRemoveParam(index)}
                     className="bg-hc-black-400 rounded border-2 border-hc-green-300 text-hc-white-200 hover:bg-hc-black-200"
                   >
