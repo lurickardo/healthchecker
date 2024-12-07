@@ -10,6 +10,7 @@ import Alert, { AlertProps } from "@/components/atoms/Alert";
 import { useState } from "react";
 import { createScheduleSchema } from "@/schemas/schedule.schema";
 import { sendRequestSchema } from "@/schemas/send.schema";
+import { sendRequest } from "@/provider/axios.provider";
 
 export default function Request() {
   const [showAlert, setShowAlert] = useState(false);
@@ -28,7 +29,7 @@ export default function Request() {
     duration: 10000,
   });
 
-  function handleSubmit(event: any) {
+  async function handleSubmit(event: any) {
     event.preventDefault();
     const typeEvent = event.target.querySelector(
       'button[type="submit"]:focus'
@@ -51,8 +52,9 @@ export default function Request() {
       if (typeEvent === "send") {
         const validatedData = sendRequestSchema.parse(data);
 
-        console.log("send");
-        console.log(validatedData);
+        const response = await sendRequest(validatedData);
+
+        console.log(response);
       }
 
       if (typeEvent === "schedule") {

@@ -4,7 +4,7 @@ export const sendRequestSchema = z.object({
   method: z.enum(["GET", "POST", "PUT", "DELETE"], {
     errorMap: () => ({ message: "Method must be one of: GET, POST, PUT, DELETE." }),
   }),
-  url: z.string().url("The URL must be in a valid format (e.g., https://example.com)."),
+  url: z.string().url("The URL must be in a valid format (e.g., https://google.com)."),
   body: z
     .string()
     .optional()
