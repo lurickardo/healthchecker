@@ -6,6 +6,7 @@ import Url from "./Url";
 import Tabs from "./Tabs";
 import Schedule from "./Schedule";
 import {
+  addDaysOfWeek,
   formatResponse,
   transformHttpPrefix,
   transformObject,
@@ -72,9 +73,17 @@ export default function Request() {
 
       if (typeEvent === "schedule") {
         const validatedData = createScheduleSchema.parse(data);
+        const response = await sendRequest(validatedData);
+        if (!response.success) {
+          throw {
+            errors: [{ message: response.message }],
+            title: "Request error",
+          };
+        }
+        setResponseBody(formatResponse(response.data));
 
         console.log("schedule");
-        console.log(validatedData);
+        console.log(addDaysOfWeek(validatedData));
       }
     } catch (error: any) {
       if (error) {

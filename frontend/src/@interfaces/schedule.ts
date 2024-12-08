@@ -12,6 +12,7 @@ interface Schedule {
     method: "GET" | "POST" | "PUT" | "DELETE";
     url: string;
     body?: string;
+    daysOfWeek?: number[];
     monday?: "on" | "off";
     tuesday?: "on" | "off";
     wednesday?: "on" | "off";

@@ -10,7 +10,7 @@ const server: FastifyInstance = fastify({
 
 async function bootstrap(): Promise<void> {
 	try {
-		process.stdout.write("\x1Bc\n\x1b[32mStarting backend server...\x1b[0m\n");
+		process.stdout.write("\x1Bc\n\x1b[32mStarting microservice healthcheck proxy server...\x1b[0m\n");
 		server.setErrorHandler((error, request, reply) =>
 			errorHandler(error, request, reply),
 		);

@@ -1,4 +1,4 @@
-# <p align="center">Healthcheck Backend</p>
+# <p align="center">Healthcheck Microservice Proxy</p>
 
 <p align="center">
   <img src="https://github.com/lurickardo/skeleton/assets/34722198/2f22922f-c04a-4278-b379-e75a56ada011" alt="Logo" width="120">
@@ -55,4 +55,4 @@ $ bun run prd
 
 ## Swagger
 
-`http://localhost:3000/api/healthcheck-backend/docs`
+`http://localhost:3000/api/mshealthcheckproxy/docs`

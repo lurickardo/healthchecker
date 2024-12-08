@@ -11,7 +11,7 @@ interface SendRequestResponse {
 
 export async function sendRequest(data: SendRequestSchema): Promise<SendRequestResponse> {
   try {
-    const proxyUrl = 'http://localhost:3001/api/healthcheckbackend/v1/proxy';
+    const proxyUrl = 'http://localhost:3001/api/mshealthcheckproxy/v1/proxy';
     const proxyData = {
       url: `${data.url}?${new URLSearchParams(data.params).toString()}`,
       headers: data.headers,

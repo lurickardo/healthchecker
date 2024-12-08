@@ -1,3 +1,5 @@
+import { CreateScheduleSchema } from "@/schemas/schedule.schema";
+
 export const markPage = (pathname: string | undefined, href: string, className: string) =>
     pathname === href ? className : "";
 
@@ -63,24 +65,42 @@ export const transformHttpPrefix = (url: string): string => {
 
 export const formatResponse = (data: any): string => {
     if (typeof data === 'object' && data !== null) {
-        // Caso seja JSON (verifica se é um objeto ou array válido)
         try {
             return JSON.stringify(data, null, 2);
         } catch (err) {
             throw new Error('Invalid JSON data');
         }
     } else if (typeof data === 'string') {
-        // Verifica se é um XML
         if (data.trim().startsWith('<') && data.trim().endsWith('>')) {
-            // Para XML, apenas retorna a string original
             return data;
         }
-        // Verifica se é HTML
         if (data.includes('<html') || data.includes('<body') || data.includes('<head')) {
-            // Retorna a string de HTML como está
             return data;
         }
     }
-
     throw new Error('Unsupported data format');
 };
+
+export function addDaysOfWeek(schedule: any): Schedule {
+    console.log(schedule);
+
+    const daysInOrder = [
+      { key: 'monday', value: 1 },
+      { key: 'tuesday', value: 2 },
+      { key: 'wednesday', value: 3 },
+      { key: 'thursday', value: 4 },
+      { key: 'friday', value: 5 },
+      { key: 'saturday', value: 6 },
+      { key: 'sunday', value: 0 },
+    ];
+
+    const daysOfWeek: number[] = [];
+
+    for (const day of daysInOrder) {
+      if (schedule[day.key]?.toLowerCase() === 'on') {
+        daysOfWeek.push(day.value - 1);
+      }
+    }
+
+    return { ...schedule, daysOfWeek };
+}
