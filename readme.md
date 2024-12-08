@@ -1,6 +1,11 @@
 # healthchecker
 Tool for implementing synthetic tests in services
 
+# Architecture
+
+![image](https://github.com/user-attachments/assets/15d658a1-9ba2-4cf6-8edc-ba6677117d70)
+
+
 */5   -> A cada 5 segundos.
 *     -> Todos os minutos.
 *     -> Todas as horas.
