@@ -1,39 +1,25 @@
 import type { FastifySchema } from "fastify";
 
 export class HealthcheckSchema {
-	public findById: FastifySchema = {
-		params: {
+	public proxy: FastifySchema = {
+		body: {
 			type: "object",
 			properties: {
-				id: {
+				url: {
 					type: "string",
 				},
+				headers: {
+					type: "object",
+				},
+				body: {
+					type: "object",
+				},
 			},
-			required: ["id"],
-		},
-		headers: {
-			type: "object",
-			properties: {
-				Authorization: { type: "string" },
-			},
-			additionalProperties: true,
+			required: ["url", "headers", "body"],
 		},
 	};
 
-	public listAll: FastifySchema = {
-		params: {
-			type: "object",
-			properties: {},
-			required: [],
-		},
-		headers: {
-			type: "object",
-			properties: {},
-			additionalProperties: true,
-		},
-	};
-
-	public proxy: FastifySchema = {
+	public createScheduleRequest: FastifySchema = {
 		body: {
 			type: "object",
 			properties: {

@@ -1,17 +1,29 @@
 # healthchecker
-Tool for implementing synthetic tests in services
+Tool to implement synthetic tests of your services using your own infrastructure.
+In order to enable monitoring of SLA compliance.
 
 # Architecture
 
-![image](https://github.com/user-attachments/assets/15d658a1-9ba2-4cf6-8edc-ba6677117d70)
+![healthcheck](https://github.com/user-attachments/assets/e2f67f78-ca28-4a8d-96ab-802da9947d85)
 
-
+<p>
 */5   -> A cada 5 segundos.
+</p>
+<p>
 *     -> Todos os minutos.
+</p>
+<p>
 *     -> Todas as horas.
+</p>
+<p>
 *     -> Todos os dias do mês.
+</p>
+<p>
 *     -> Todos os meses.
+</p>
+<p>
 *     -> Todos os dias da semana. 0 = domingo - 1 = segunda...
+</p>
 
 ## Contract
 

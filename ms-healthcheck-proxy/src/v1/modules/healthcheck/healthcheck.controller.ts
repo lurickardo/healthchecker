@@ -9,20 +9,6 @@ export class HealthcheckController {
 		this.healthcheckService = new HealthcheckService();
 	}
 
-	public findById = async (
-		{ params: { id } },
-		reply: FastifyReply,
-	): Promise<RouteHandlerMethod> => {
-		return reply.code(200).send(await this.healthcheckService.findById(id));
-	};
-
-	public listAll = async (
-		request: FastifyRequest,
-		reply: FastifyReply,
-	): Promise<RouteHandlerMethod> => {
-		return reply.code(200).send(await this.healthcheckService.listAll());
-	};
-
 	public proxy = async (
 		{ body }: FastifyRequest,
 		reply: FastifyReply,

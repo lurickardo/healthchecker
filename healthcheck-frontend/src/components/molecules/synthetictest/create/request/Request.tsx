@@ -6,8 +6,8 @@ import Url from "./Url";
 import Tabs from "./Tabs";
 import Schedule from "./Schedule";
 import {
-  addDaysOfWeek,
   formatResponse,
+  formatScheduleRequest,
   transformHttpPrefix,
   transformObject,
 } from "@/utils/utils";
@@ -83,7 +83,7 @@ export default function Request() {
         setResponseBody(formatResponse(response.data));
 
         console.log("schedule");
-        console.log(addDaysOfWeek(validatedData));
+        console.log(formatScheduleRequest(validatedData));
       }
     } catch (error: any) {
       if (error) {

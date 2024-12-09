@@ -11,32 +11,6 @@ export class HealthcheckRouteV1 {
 		this.healthcheckSchema = new HealthcheckSchema();
 	}
 
-	private findById = (): RouteOptions => {
-		return {
-			method: "GET",
-			url: "/v1/healthcheck/:id",
-			schema: {
-				tags: ["v1"],
-				summary: "Find data of healthcheck by id",
-				...this.healthcheckSchema.findById,
-			},
-			handler: this.healthcheckController.findById as RouteHandlerMethod,
-		};
-	};
-
-	private listAll = (): RouteOptions => {
-		return {
-			method: "GET",
-			url: "/v1/healthcheck",
-			schema: {
-				tags: ["v1"],
-				summary: "Find data of all healthchecks",
-				...this.healthcheckSchema.listAll,
-			},
-			handler: this.healthcheckController.listAll as RouteHandlerMethod,
-		};
-	};
-
 	private proxy = (): RouteOptions => {
 		return {
 			method: "POST",
@@ -64,11 +38,6 @@ export class HealthcheckRouteV1 {
 	};
 
 	public routes = (): RouteOptions[] => {
-		return [
-			this.findById(),
-			this.listAll(),
-			this.proxy(),
-			this.remove(),
-		];
+		return [this.proxy(), this.remove()];
 	};
 }
