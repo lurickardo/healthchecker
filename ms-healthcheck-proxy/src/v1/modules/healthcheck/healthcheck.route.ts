@@ -11,16 +11,30 @@ export class HealthcheckRouteV1 {
 		this.healthcheckSchema = new HealthcheckSchema();
 	}
 
-	private proxy = (): RouteOptions => {
+	private sendRequest = (): RouteOptions => {
 		return {
 			method: "POST",
-			url: "/v1/proxy",
+			url: "/v1/healthcheck/proxy/sendRequest",
 			schema: {
 				tags: ["v1"],
 				summary: "Send request proxy",
-				...this.healthcheckSchema.proxy,
+				...this.healthcheckSchema.sendRequest,
 			},
-			handler: this.healthcheckController.proxy as RouteHandlerMethod,
+			handler: this.healthcheckController.sendRequest as RouteHandlerMethod,
+		};
+	};
+
+	private createScheduleRequest = (): RouteOptions => {
+		return {
+			method: "POST",
+			url: "/v1/healthcheck/schedule/request",
+			schema: {
+				tags: ["v1"],
+				summary: "Create schedule request",
+				...this.healthcheckSchema.createScheduleRequest,
+			},
+			handler: this.healthcheckController
+				.createScheduleRequest as RouteHandlerMethod,
 		};
 	};
 
@@ -38,6 +52,6 @@ export class HealthcheckRouteV1 {
 	};
 
 	public routes = (): RouteOptions[] => {
-		return [this.proxy(), this.remove()];
+		return [this.sendRequest(), this.createScheduleRequest(), this.remove()];
 	};
 }

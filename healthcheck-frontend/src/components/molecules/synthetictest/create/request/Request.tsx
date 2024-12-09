@@ -15,7 +15,7 @@ import Alert, { AlertProps } from "@/components/atoms/Alert";
 import { useState } from "react";
 import { createScheduleSchema } from "@/schemas/schedule.schema";
 import { sendRequestSchema } from "@/schemas/send.schema";
-import { sendRequest } from "@/provider/axios.provider";
+import { HealthckeckProxyProvider } from "@/provider/healthcheck-proxy.provider";
 import { useResponse } from "@/context/synthetictests/create/ResponseContext";
 
 export default function Request() {
@@ -56,10 +56,12 @@ export default function Request() {
     );
 
     try {
+      const healthcheckProxy = new HealthckeckProxyProvider();
+
       if (typeEvent === "send") {
         const validatedData = sendRequestSchema.parse(data);
 
-        const response = await sendRequest(validatedData);
+        const response = await healthcheckProxy.sendRequest(validatedData);
 
         if (!response.success) {
           throw {
@@ -73,7 +75,7 @@ export default function Request() {
 
       if (typeEvent === "schedule") {
         const validatedData = createScheduleSchema.parse(data);
-        const response = await sendRequest(validatedData);
+        const response = await healthcheckProxy.sendRequest(validatedData);
         if (!response.success) {
           throw {
             errors: [{ message: response.message }],
@@ -82,8 +84,9 @@ export default function Request() {
         }
         setResponseBody(formatResponse(response.data));
 
-        console.log("schedule");
-        console.log(formatScheduleRequest(validatedData));
+        healthcheckProxy.createScheduleRequest(
+          formatScheduleRequest(validatedData)
+        );
       }
     } catch (error: any) {
       if (error) {

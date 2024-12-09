@@ -1,6 +1,7 @@
 import type { FastifyReply, FastifyRequest, RouteHandlerMethod } from "fastify";
 import { transformSendRequestDto } from "./dto";
 import { HealthcheckService } from "./healthcheck.service";
+import { transformCreateScheduleRequest } from "./dto/createScheduleRequest.dto";
 
 export class HealthcheckController {
 	private healthcheckService: HealthcheckService;
@@ -9,13 +10,30 @@ export class HealthcheckController {
 		this.healthcheckService = new HealthcheckService();
 	}
 
-	public proxy = async (
+	public sendRequest = async (
 		{ body }: FastifyRequest,
 		reply: FastifyReply,
 	): Promise<RouteHandlerMethod> => {
 		return reply
 			.code(200)
-			.send(await this.healthcheckService.proxy(transformSendRequestDto(body)));
+			.send(
+				await this.healthcheckService.sendRequest(
+					transformSendRequestDto(body),
+				),
+			);
+	};
+
+	public createScheduleRequest = async (
+		{ body }: FastifyRequest,
+		reply: FastifyReply,
+	): Promise<RouteHandlerMethod> => {
+		return reply
+			.code(200)
+			.send(
+				await this.healthcheckService.createScheduleRequest(
+					transformCreateScheduleRequest(body),
+				), 
+			);
 	};
 
 	public remove = async (

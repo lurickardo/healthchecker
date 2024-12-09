@@ -2,9 +2,10 @@ import * as HttpStatus from "http-status";
 import { httpException } from "../../../../src/config/error";
 import type { SendRequestSchema } from "./dto";
 import axios, { type AxiosRequestConfig } from "axios";
+import { CreateScheduleRequest } from "./dto/createScheduleRequest.dto";
 
 export class HealthcheckService {
-	public async proxy(sendRequestSchema: SendRequestSchema) {
+	public async sendRequest(sendRequestSchema: SendRequestSchema) {
 		const config: AxiosRequestConfig = {
 			method: sendRequestSchema.method,
 			url: sendRequestSchema.url,
@@ -26,6 +27,14 @@ export class HealthcheckService {
 			data: response.data,
 			status: response.status,
 		};
+	}
+
+	public async createScheduleRequest(
+		createScheduleRequest: CreateScheduleRequest,
+	) {
+		console.log(createScheduleRequest);
+
+		return { success: true };
 	}
 
 	public async remove(id: string) {
