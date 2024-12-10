@@ -16,9 +16,9 @@
 		"test:cov": "jest --runInBand --config ./test/jest.config.json --collect-coverage",
 		"lint": "npx @biomejs/biome format ./ --write",
 		"lint:check": "npx @biomejs/biome check ./src",
-		"start": "PORT=3001 APP_ENVIRONMENT=DEV USE_ROUTE_PREFIX=true node dist/src/main.js",
-		"dev": "PORT=3001 APP_ENVIRONMENT=DEV USE_ROUTE_PREFIX=true ts-node-dev --respawn --transpile-only --env-file=.env src/main.ts",
-		"prd": "PORT=3001 APP_ENVIRONMENT=PRD USE_ROUTE_PREFIX=true node dist/src/main.js"
+		"start": "node dist/src/main.js",
+		"dev": "ts-node-dev --respawn --transpile-only --env-file=.env src/main.ts",
+		"prd": "node dist/src/main.js"
 	},
 	"dependencies": {
 		"@fastify/cors": "^9.0.1",

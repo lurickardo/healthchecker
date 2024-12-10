@@ -1,0 +1,35 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"complexity": {
+				"noForEach": "off",
+				"noUselessCatch": "off",
+				"noStaticOnlyClass": "off"
+			},
+			"style": {
+				"useImportType": "off",
+				"useDefaultParameterLast": "off",
+				"noNonNullAssertion": "off"
+			}
+		}
+	},
+	"files": {
+		"ignore": [
+			"node_modules/",
+			"coverage/",
+			"dist/",
+			"package-lock.json",
+			"README.md",
+			"LICENS"
+		]
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"name": "healthchecker",
+	"version": "1.0.0",
+	"description": "Tool for implementing synthetic tests in services.",
+	"author": "Luiz Ricardo Santos",
+	"license": "Apache-2.0",
+	"scripts": {
+		"build": "tsc",
+		"start": "node -r ts-node/register --env-file=.env src/main.ts",
+		"dev": "ts-node-dev --respawn --transpile-only --env-file=.env src/main.ts",
+		"debug": "ts-node-dev --respawn --transpile-only --debug --env-file=.env src/main.ts",
+		"prod": "node --env-file=.env dist/src/main",
+		"lint": "npx @biomejs/biome format ./ --write",
+		"lint:check": "npx @biomejs/biome check ./src"
+	},
+	"dependencies": {
+		"@types/amqplib": "^0.10.6",
+		"@types/node": "^22.9.1",
+		"amqplib": "^0.10.5",
+		"axios": "^1.7.7",
+		"http-status": "^2.0.0",
+		"mongodb": "^6.10.0",
+		"nano": "^10.1.4",
+		"node-cron": "^3.0.3",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/jest": "^29.5.11",
+		"@types/node-cron": "^3.0.11",
+		"ts-node": "^10.9.2",
+		"ts-node-dev": "^2.0.0",
+		"tsconfig-paths": "^4.2.0",
+		"tslib": "^2.6.2",
+		"typescript": "^5.3.3"
+	}
+}
