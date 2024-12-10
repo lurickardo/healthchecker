@@ -12,7 +12,7 @@ export default function Template({ children }: TemplateProps) {
 
   return (
     <>
-      <main className="flex gap-10 min-h-screen bg-wave bg-no-repeat bg-bottom bg-contain text-lg">
+      <main className="flex gap-10 min-h-screen bg-no-repeat bg-bottom bg-contain text-lg">
         <SideBar onSidebarStateChange={setSidebarOpen} />
         <div
           className={`pl-4 transition-all duration-300 ease-in-out mt-6 ${

@@ -3,6 +3,8 @@ import { httpException } from "../../../../src/config/error";
 import type { SendRequestSchema } from "./dto";
 import axios, { type AxiosRequestConfig } from "axios";
 import { CreateScheduleRequest } from "./dto/createScheduleRequest.dto";
+import { RabbitmqProvider } from "../../../provider/rabbitmq.provider";
+import { env } from "../../../config/env";
 
 export class HealthcheckService {
 	public async sendRequest(sendRequestSchema: SendRequestSchema) {
@@ -32,9 +34,13 @@ export class HealthcheckService {
 	public async createScheduleRequest(
 		createScheduleRequest: CreateScheduleRequest,
 	) {
-		console.log(createScheduleRequest);
+		const rabbitmqProvider = new RabbitmqProvider();
+		await rabbitmqProvider.sendMessage(
+			env.amqp.queues.inputCreateScheduleRequest,
+			createScheduleRequest,
+		);
 
-		return { success: true };
+		return { success: true, messageStatus: "send" };
 	}
 
 	public async remove(id: string) {

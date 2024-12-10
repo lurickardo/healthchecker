@@ -19,9 +19,7 @@ const config = {
 			},
 		},
 		extend: {
-			backgroundImage: {
-				'wave': "url('/background/wave.svg')",
-			},
+			backgroundImage: {},
 			fontFamily: {
 				sans: ["var(--font-sans)", ...fontFamily.sans],
 				poppins: ["Poppins", ...fontFamily.sans],

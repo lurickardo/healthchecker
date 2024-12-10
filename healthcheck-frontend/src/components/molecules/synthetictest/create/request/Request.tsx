@@ -1,10 +1,16 @@
 "use client";
 
 import Button from "@/components/atoms/Button";
-import { CalendarCheck, CheckCircle, CircleX } from "lucide-react";
+import {
+  CalendarCheck,
+  CheckCircle,
+  CircleX,
+  CircleCheckBig,
+} from "lucide-react";
 import Url from "./Url";
 import Tabs from "./Tabs";
 import Schedule from "./Schedule";
+import Spinner from "@/components/atoms/Spinner";
 import {
   formatResponse,
   formatScheduleRequest,
@@ -17,10 +23,15 @@ import { createScheduleSchema } from "@/schemas/schedule.schema";
 import { sendRequestSchema } from "@/schemas/send.schema";
 import { HealthckeckProxyProvider } from "@/provider/healthcheck-proxy.provider";
 import { useResponse } from "@/context/synthetictests/create/ResponseContext";
+import { useRouter } from "next/navigation";
 
 export default function Request() {
+  const router = useRouter();
+
   const [showAlert, setShowAlert] = useState(false);
   const { setResponseBody } = useResponse();
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
+  const [loadingSend, setLoadingSend] = useState(false);
 
   const handleAlertClose = () => {
     setShowAlert(false);
@@ -59,6 +70,9 @@ export default function Request() {
       const healthcheckProxy = new HealthckeckProxyProvider();
 
       if (typeEvent === "send") {
+        setLoadingSend(true);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const validatedData = sendRequestSchema.parse(data);
 
         const response = await healthcheckProxy.sendRequest(validatedData);
@@ -74,6 +88,8 @@ export default function Request() {
       }
 
       if (typeEvent === "schedule") {
+        setLoadingSchedule(true);
+
         const validatedData = createScheduleSchema.parse(data);
         const response = await healthcheckProxy.sendRequest(validatedData);
         if (!response.success) {
@@ -84,9 +100,25 @@ export default function Request() {
         }
         setResponseBody(formatResponse(response.data));
 
-        healthcheckProxy.createScheduleRequest(
+        const scheduleCreated = await healthcheckProxy.createScheduleRequest(
           formatScheduleRequest(validatedData)
         );
+
+        if (scheduleCreated.status) {
+          setAlertProps({
+            title: "Success",
+            content: "Schedule created successfully",
+            icon: CircleCheckBig,
+            borderColor: "border-hc-green-400",
+            textColor: "text-hc-green-400",
+            onClose: handleAlertClose,
+            duration: 8000,
+          });
+          setShowAlert(true);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push("/healthcheck/synthetictests");
       }
     } catch (error: any) {
       if (error) {
@@ -103,22 +135,35 @@ export default function Request() {
         setShowAlert(true);
         setResponseBody("");
       }
+    } finally {
+      setLoadingSend(false);
+      setLoadingSchedule(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="w-7/12">
-      <Url />
-      <Tabs />
-      <div className="mt-0">
-        <Schedule />
-        <div className="mt-8 w-full">
-          <Button
-            label="Schedule"
-            name="schedule"
-            icon={<CalendarCheck />}
-            className="flex justify-center bg-hc-green-500 hover:bg-hc-green-400 border-hc-green-400 border-2 items-center px-4 py-2 font-bold rounded text-center whitespace-nowrap"
-          />{" "}
+      <div>
+        {loadingSchedule && (
+          <Spinner
+            className="absolute top-[40%] left-[33%]"
+            fill="fill-hc-green-500"
+          />
+        )}
+        <div className={loadingSchedule ? "opacity-40" : ""}>
+          <Url loading={loadingSend} />
+          <Tabs />
+          <div className="mt-0">
+            <Schedule />
+            <div className="mt-8 w-full">
+              <Button
+                label="Schedule"
+                name="schedule"
+                icon={<CalendarCheck />}
+                className="flex justify-center bg-hc-green-500 hover:bg-hc-green-400 border-hc-green-400 border-2 items-center px-4 py-2 font-bold rounded text-center whitespace-nowrap"
+              />{" "}
+            </div>
+          </div>
         </div>
       </div>
       {showAlert && (

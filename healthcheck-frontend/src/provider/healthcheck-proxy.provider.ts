@@ -77,7 +77,6 @@ export class HealthckeckProxyProvider {
 				success: true,
 				data: response.data.data,
 				status: response.status,
-				everythingElse: response,
 			};
 		} catch (error: any) {
 			if (axios.isAxiosError(error)) {
