@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
 	"organizeImports": {
 		"enabled": true
 	},
@@ -12,13 +12,7 @@
 			},
 			"complexity": {
 				"noForEach": "off",
-				"noUselessCatch": "off",
-				"noStaticOnlyClass": "off"
-			},
-			"style": {
-				"useImportType": "off",
-				"useDefaultParameterLast": "off",
-				"noNonNullAssertion": "off"
+				"noUselessCatch": "off"
 			}
 		}
 	},

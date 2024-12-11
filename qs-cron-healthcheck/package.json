@@ -1,9 +1,10 @@
 {
-	"name": "healthchecker",
+	"name": "skeleton",
 	"version": "1.0.0",
-	"description": "Tool for implementing synthetic tests in services.",
+	"description": "Generic software architecture framework in Node.js using Fastify, designed to provide a flexible and reusable foundation for application development.",
 	"author": "Luiz Ricardo Santos",
-	"license": "Apache-2.0",
+	"private": true,
+	"license": "MIT",
 	"scripts": {
 		"build": "tsc",
 		"start": "node -r ts-node/register --env-file=.env src/main.ts",
@@ -14,19 +15,15 @@
 		"lint:check": "npx @biomejs/biome check ./src"
 	},
 	"dependencies": {
-		"@types/amqplib": "^0.10.6",
 		"@types/node": "^22.9.1",
-		"amqplib": "^0.10.5",
-		"axios": "^1.7.7",
-		"http-status": "^2.0.0",
-		"mongodb": "^6.10.0",
+		"amqplib": "^0.10.3",
+		"zod": "^3.22.4",
 		"nano": "^10.1.4",
-		"node-cron": "^3.0.3",
-		"zod": "^3.23.8"
+		"node-cron": "^3.0.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@types/jest": "^29.5.11",
+		"@biomejs/biome": "1.5.3",
+		"@types/amqplib": "^0.10.5",
 		"@types/node-cron": "^3.0.11",
 		"ts-node": "^10.9.2",
 		"ts-node-dev": "^2.0.0",
