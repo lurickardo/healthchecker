@@ -17,9 +17,8 @@ const envSchema = z.object({
 			url: z.string().url().min(1),
 			clearOnInit: z.boolean(),
 			collections: z.object({
-				jobs: z.string().min(1),
-				tasks: z.string().min(1),
-				healthchecks: z.string().min(1),
+				schedule: z.string().min(1),
+				response: z.string().min(1),
 			}),
 		}),
 	}),
@@ -41,9 +40,8 @@ export const env = envSchema.parse({
 			url: process.env.COUCHDB_URL,
 			clearOnInit: process.env.COUCHDB_CLEAR_ON_INIT === "true",
 			collections: {
-				jobs: process.env.COUCHDB_COLLECTIONS_JOBS,
-				tasks: process.env.COUCHDB_COLLECTIONS_TASKS,
-				healthchecks: process.env.COUCHDB_COLLECTIONS_HEALTHCHEKS,
+				schedule: process.env.COUCHDB_COLLECTIONS_SCHEDULES,
+				response: process.env.COUCHDB_COLLECTIONS_RESPONSES,
 			},
 		},
 	},

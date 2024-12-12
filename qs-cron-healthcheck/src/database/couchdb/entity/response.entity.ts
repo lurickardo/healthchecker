@@ -1,24 +1,28 @@
-export class HealthcheckEntity {
+export class ResponseEntity {
 	_id: string;
 	_rev: string;
 	customId: any;
-	jobId: string;
+	scheduleId: string;
 	response: object;
 	datetime: Date | "manual" | "init";
+	taskName: string;
+	timezone: string;
 
 	constructor(
-		jobId: string,
+		scheduleId: string,
 		response: object,
 		datetime: Date | "manual" | "init",
+		taskName: string,
+		timezone: string,
 		_id?: string,
 		_rev?: string,
-		customId?: any,
 	) {
 		this._id = _id;
 		this._rev = _rev;
-		this.customId = customId;
-		this.jobId = jobId;
+		this.scheduleId = scheduleId;
 		this.response = response;
 		this.datetime = datetime;
+		this.taskName = taskName;
+		this.timezone = timezone;
 	}
 }

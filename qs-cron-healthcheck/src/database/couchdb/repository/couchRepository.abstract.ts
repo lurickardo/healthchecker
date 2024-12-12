@@ -1,4 +1,4 @@
-import * as nano from "nano";
+import type * as nano from "nano";
 
 export class CouchRepository {
 	protected async ensureDatabaseExists(

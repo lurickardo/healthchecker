@@ -1,20 +1,20 @@
 import { env } from "../../../config/env";
-import type { TaskEntity } from "../entity/task.entity";
+import type { ResponseEntity } from "../entity/response.entity";
 import { randomUUID } from "node:crypto";
 import * as nano from "nano";
 
-export class TasksRepository {
+export class HealthcheckRepository {
 	couchDbUrl: string;
 	collection: string;
-	db: nano.DocumentScope<TaskEntity | any>;
+	db: nano.DocumentScope<ResponseEntity | any>;
 
 	constructor() {
 		this.couchDbUrl = env.databases.couchdb.url;
-		this.collection = env.databases.couchdb.collections.tasks;
-		this.db = nano(this.couchDbUrl).use<TaskEntity>(this.collection);
+		this.collection = env.databases.couchdb.collections.response;
+		this.db = nano(this.couchDbUrl).use<ResponseEntity>(this.collection);
 	}
 
-	public async findOne(id: string): Promise<TaskEntity | null> {
+	public async findOne(id: string): Promise<ResponseEntity | null> {
 		try {
 			const doc = await this.db.get(id);
 			return doc;
@@ -26,7 +26,9 @@ export class TasksRepository {
 		}
 	}
 
-	public async find(selector: Partial<TaskEntity> = {}): Promise<TaskEntity[]> {
+	public async find(
+		selector: Partial<ResponseEntity> = {},
+	): Promise<ResponseEntity[]> {
 		const query = {
 			selector: { ...selector },
 		};
@@ -35,21 +37,22 @@ export class TasksRepository {
 	}
 
 	public async create(
-		entity: Partial<TaskEntity>,
-		customId?: any,
-	): Promise<TaskEntity> {
-		if (customId) {
-			entity.customId = customId;
-		}
+		entity: Partial<ResponseEntity>,
+		customId: any = randomUUID(),
+	): Promise<ResponseEntity> {
+		const newEntity = {
+			_id: customId,
+			...entity,
+		};
 
-		await this.db.insert(entity);
-		return entity as TaskEntity;
+		await this.db.insert(newEntity);
+		return newEntity as ResponseEntity;
 	}
 
 	public async updateById(
 		id: string,
-		update: Partial<TaskEntity>,
-	): Promise<TaskEntity | null> {
+		update: Partial<ResponseEntity>,
+	): Promise<ResponseEntity | null> {
 		try {
 			const existing = await this.findOne(id);
 			if (!existing) {
@@ -58,6 +61,19 @@ export class TasksRepository {
 			const updatedEntity = { ...existing, ...update };
 			await this.db.insert(updatedEntity);
 			return updatedEntity;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	public async delete(id: string): Promise<boolean> {
+		try {
+			const doc = await this.findOne(id);
+			if (!doc) {
+				return false;
+			}
+			await this.db.destroy(id, doc._rev);
+			return true;
 		} catch (error) {
 			throw error;
 		}
@@ -79,6 +95,7 @@ export class TasksRepository {
 			}));
 
 			await this.db.bulk({ docs: bulkDeletes });
+			console.log("Todos os documentos foram deletados.");
 			return true;
 		} catch (error) {
 			console.error("Erro ao deletar todos os documentos:", error);

@@ -1,20 +1,20 @@
 import { env } from "../../../config/env";
-import type { JobEntity } from "../entity/job.entity";
+import type { ScheduleEntity } from "../entity/schedule.entity";
 import { randomUUID } from "node:crypto";
 import * as nano from "nano";
 
-export class JobsRepository {
+export class ScheduleRepository {
 	couchDbUrl: string;
 	collection: string;
-	db: nano.DocumentScope<JobEntity | any>;
+	db: nano.DocumentScope<ScheduleEntity | any>;
 
 	constructor() {
 		this.couchDbUrl = env.databases.couchdb.url;
-		this.collection = env.databases.couchdb.collections.jobs;
-		this.db = nano(this.couchDbUrl).use<JobEntity>(this.collection);
+		this.collection = env.databases.couchdb.collections.schedule;
+		this.db = nano(this.couchDbUrl).use<ScheduleEntity>(this.collection);
 	}
 
-	public async findOne(id: string): Promise<JobEntity | null> {
+	public async findOne(id: string): Promise<ScheduleEntity | null> {
 		try {
 			const doc = await this.db.get(id);
 			return doc;
@@ -26,7 +26,9 @@ export class JobsRepository {
 		}
 	}
 
-	public async find(selector: Partial<JobEntity> = {}): Promise<JobEntity[]> {
+	public async find(
+		selector: Partial<ScheduleEntity> = {},
+	): Promise<ScheduleEntity[]> {
 		const query = {
 			selector: { ...selector },
 		};
@@ -35,21 +37,22 @@ export class JobsRepository {
 	}
 
 	public async create(
-		entity: Partial<JobEntity>,
-		customId?: any,
-	): Promise<JobEntity> {
-		if (customId) {
-			entity.customId = customId;
-		}
+		entity: Partial<ScheduleEntity>,
+		customId: any = randomUUID(),
+	): Promise<ScheduleEntity> {
+		const newEntity = {
+			_id: customId,
+			...entity,
+		};
 
-		await this.db.insert(entity);
-		return entity as JobEntity;
+		await this.db.insert(newEntity);
+		return entity as ScheduleEntity;
 	}
 
 	public async updateById(
 		id: string,
-		update: Partial<JobEntity>,
-	): Promise<JobEntity | null> {
+		update: Partial<ScheduleEntity>,
+	): Promise<ScheduleEntity | null> {
 		try {
 			const existing = await this.findOne(id);
 			if (!existing) {
@@ -69,7 +72,7 @@ export class JobsRepository {
 			if (!doc) {
 				return false;
 			}
-			await this.db.destroy(id, doc._rev!);
+			await this.db.destroy(id, doc._rev);
 			return true;
 		} catch (error) {
 			throw error;

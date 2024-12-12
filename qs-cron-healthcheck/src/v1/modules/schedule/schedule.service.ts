@@ -15,7 +15,6 @@ export const scheduleService = {
 	},
 	remove: async (removeScheduleDto: RemoveScheduleDto) => {
 		console.log(removeScheduleDto);
-
 		return;
 	},
 };
