@@ -3,7 +3,7 @@ import type { ResponseEntity } from "../entity/response.entity";
 import { randomUUID } from "node:crypto";
 import * as nano from "nano";
 
-export class HealthcheckRepository {
+export class ResponseRepository {
 	couchDbUrl: string;
 	collection: string;
 	db: nano.DocumentScope<ResponseEntity | any>;

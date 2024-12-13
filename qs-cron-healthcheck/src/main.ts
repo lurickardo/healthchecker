@@ -2,6 +2,7 @@ import * as amqp from "amqplib";
 import { env } from "./config/env";
 import { queues } from "./app.module";
 import { DatabaseInitializer } from "./database/couchdb/database.initializer";
+import { scheduleManager } from "./v1/modules/schedule/schedule.manager";
 
 async function bootstrap(): Promise<void> {
 	const connection = await amqp.connect(env.amqp.amqpUrl);
@@ -15,6 +16,7 @@ async function bootstrap(): Promise<void> {
 	process.stdout.write(
 		`\x1Bc\n\x1b[32m[*] awaiting messages at exchange ${env.amqp.exchangeName}...\x1b[0m\n`,
 	);
+	await scheduleManager.initAllSchedules();
 
 	await queues(channel);
 }

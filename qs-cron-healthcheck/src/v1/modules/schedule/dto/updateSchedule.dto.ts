@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const updateScheduleSchema = z
 	.object({
+		_id: z.string().nonempty("A valid schedule ID is required."),
 		method: z.enum(["GET", "POST", "PUT", "DELETE"], {
 			errorMap: () => ({
 				message: "Method must be one of: GET, POST, PUT, DELETE.",
@@ -17,7 +18,7 @@ const updateScheduleSchema = z
 				(value) => {
 					try {
 						if (value) {
-							JSON.parse(value); // Verifica se o JSON é válido
+							JSON.parse(value);
 						}
 						return true;
 					} catch {
@@ -82,19 +83,23 @@ const updateScheduleSchema = z
 				message: "Headers must be an object with string keys and values.",
 			}),
 		}),
+		daysOfWeek: z.array(z.number()),
+		cronInterval: z.string(),
 	})
 	.refine(
-		(data: any) =>
-			[
-				"monday",
-				"tuesday",
-				"wednesday",
-				"thursday",
-				"friday",
-				"saturday",
-				"sunday",
-			].some((day) => data[day] === "on" || data[day] === "off"),
-		{ message: "At least one day of the week must be selected." },
+		(data: any) => {
+			const daysOfWeek = data.daysOfWeek;
+			return (
+				daysOfWeek.includes(0) ||
+				daysOfWeek.includes(1) ||
+				daysOfWeek.includes(2) ||
+				daysOfWeek.includes(3) ||
+				daysOfWeek.includes(4) ||
+				daysOfWeek.includes(5) ||
+				daysOfWeek.includes(6)
+			);
+		},
+		{ message: "At least one of the days of week must be selected." },
 	);
 
 export type UpdateScheduleDto = z.infer<typeof updateScheduleSchema>;

@@ -39,7 +39,6 @@ export class DatabaseInitializer {
 						continue;
 					}
 
-					// Preparar os documentos para exclusão
 					const bulkDeletes = allDocs.rows.map((row) => ({
 						_id: row.id,
 						_rev: row.doc?._rev,

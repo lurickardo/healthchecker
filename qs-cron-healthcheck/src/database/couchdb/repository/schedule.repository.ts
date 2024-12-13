@@ -46,7 +46,7 @@ export class ScheduleRepository {
 		};
 
 		await this.db.insert(newEntity);
-		return entity as ScheduleEntity;
+		return newEntity as ScheduleEntity;
 	}
 
 	public async updateById(

@@ -2,6 +2,9 @@ import * as application from "../../package.json";
 import { z } from "zod";
 
 const envSchema = z.object({
+	app: z.object({
+		timezone: z.string().min(1),
+	}),
 	amqp: z.object({
 		amqpUrl: z.string().min(1),
 		exchangeName: z.string().min(1),
@@ -25,6 +28,9 @@ const envSchema = z.object({
 });
 
 export const env = envSchema.parse({
+	app: {
+		timezone: process.env.APP_TIMEZONE || "America/Sao_Paulo",
+	},
 	amqp: {
 		amqpUrl: process.env.AMQP_URL,
 		exchangeName: process.env.EXCHANGE_NAME,
