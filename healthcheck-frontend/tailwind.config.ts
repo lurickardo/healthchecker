@@ -139,7 +139,7 @@ const config = {
 			},
 			width: {
 				"default": "calc(100vw - 8rem)",
-				"sideBarOpen": "calc(100vw - 22.5rem)",
+				"sideBarOpen": "calc(100vw - 21rem)",
 			}
 		},
 	},

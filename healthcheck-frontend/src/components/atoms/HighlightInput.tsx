@@ -9,7 +9,7 @@ const HighlightEditableText = () => {
     setText(textContent);
   };
 
-  const getHighlightedHTML = (input) => {
+  const getHighlightedHTML = (input: any) => {
     return input.replace(
       /(\{\{.*?\}\})/g,
       '<span class="text-blue-500 font-bold">$1</span>'

@@ -18,7 +18,7 @@ const bindQueues = (channel: Channel, queues: Queue[]) => {
 					errorHandler(error, queue.name);
 				}
 			},
-			// { noAck: true }, //TODO: disable to test
+			{ noAck: true }, //OBS: disable to test
 		);
 	});
 };

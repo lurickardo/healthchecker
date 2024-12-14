@@ -59,13 +59,13 @@ export default function SideBar({ onSidebarStateChange }: SideBarProps) {
 
   return (
     <section
-      className={`pt-12 pl-1 pr-12 transition-all duration-300 ease-in-out ${
-        open ? "ml-64" : ""
+      className={`pt-12 pl-1 transition-all duration-300 ease-in-out ${
+        open ? "ml-64" : "pr-12"
       }`}
     >
       <div
         className={`bg-hc-black-400 border-r-2 border-gray-600 fixed top-0 left-0 h-screen transition-all duration-300 ease-in-out ${
-          open ? "w-80" : "w-[5.2rem] hover:w-80"
+          open ? "w-60" : "w-[5.2rem] hover:w-80"
         } flex flex-col`}
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
@@ -86,7 +86,7 @@ export default function SideBar({ onSidebarStateChange }: SideBarProps) {
         </div>
 
         <div
-          className={`flex-1 overflow-auto pt-[0.9rem] ${
+          className={`flex-1 overflow-auto pt-[0.9rem] pr-2 ${
             showContent ? "block" : "hidden"
           }`}
         >
@@ -97,7 +97,7 @@ export default function SideBar({ onSidebarStateChange }: SideBarProps) {
           </ul>
         </div>
         <div
-          className={`flex-1 overflow-auto pt-4 ${
+          className={`flex-1 overflow-auto pt-4 pr-2 ${
             showContent ? "hidden" : "block"
           }`}
         >
