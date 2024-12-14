@@ -8,17 +8,14 @@ export class CouchRepository {
 		try {
 			const databases = await couchInstance.db.list();
 			if (!databases.includes(dbName)) {
-				console.log(`Banco de dados "${dbName}" não encontrado. Criando...`);
+				console.log(`Database "${dbName}" not found. Creating...`);
 				await couchInstance.db.create(dbName);
-				console.log(`Banco de dados "${dbName}" criado com sucesso.`);
+				console.log(`Database "${dbName}" create successfuly.`);
 				return;
 			}
-			console.log(`Banco de dados "${dbName}" já existe.`);
+			console.log(`Database "${dbName}" exists now.`);
 		} catch (error) {
-			console.error(
-				`Erro ao verificar/criar o banco de dados "${dbName}":`,
-				error,
-			);
+			console.error(`Error checking/creating database "${dbName}":`, error);
 			throw error;
 		}
 	}

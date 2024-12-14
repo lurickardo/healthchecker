@@ -64,6 +64,7 @@ class ScheduleManager {
 							env.app?.timezone || "UTC",
 						),
 					);
+					console.log(`Schedule ${schedule._id} executed at ${now}.`);
 				} catch (error: any) {
 					await this.responseRepository.create(
 						new ResponseEntity(
@@ -86,7 +87,7 @@ class ScheduleManager {
 
 		task.start();
 		this.tasks.set(schedule._id, task);
-		console.log(`Schedule ${schedule._id} criado com cron: ${cronExpression}`);
+		console.log(`Schedule ${schedule._id} create on cron: ${cronExpression}`);
 	}
 
 	public async removeJob(scheduleId: string): Promise<void> {
@@ -94,7 +95,7 @@ class ScheduleManager {
 		if (task) {
 			task.stop();
 			this.tasks.delete(scheduleId);
-			console.log(`Schedule ${scheduleId} removido.`);
+			console.log(`Schedule ${scheduleId} removed.`);
 		}
 	}
 }

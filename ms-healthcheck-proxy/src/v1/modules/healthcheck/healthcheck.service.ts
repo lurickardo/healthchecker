@@ -33,7 +33,7 @@ export class HealthcheckService {
 
 	public async createScheduleRequest(
 		createScheduleRequest: CreateScheduleRequest,
-	) {
+	) {		
 		const rabbitmqProvider = new RabbitmqProvider();
 		await rabbitmqProvider.sendMessage(
 			env.amqp.queues.inputCreateScheduleRequest,

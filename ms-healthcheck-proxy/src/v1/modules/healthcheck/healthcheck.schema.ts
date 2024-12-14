@@ -10,9 +10,11 @@ export class HealthcheckSchema {
 				},
 				headers: {
 					type: "object",
+					additionalProperties: { type: "string" },
 				},
 				body: {
 					type: "object",
+					additionalProperties: true,
 				},
 			},
 			required: ["url", "headers", "body"],
@@ -37,8 +39,6 @@ export class HealthcheckSchema {
 					type: "array",
 					items: {
 						type: "number",
-						minimum: 0,
-						maximum: 6,
 					},
 				},
 				monday: {
@@ -75,21 +75,22 @@ export class HealthcheckSchema {
 				},
 				interval: {
 					type: "string",
-					pattern: "^[1-9]\\d*$",
 				},
 				params: {
 					type: "object",
+					additionalProperties: { type: "string" },
 				},
 				headers: {
 					type: "object",
+					additionalProperties: { type: "string" },
 				},
 				cronInterval: {
 					type: "string",
 				},
 			},
-			required: ["method", "url", "intervalType", "interval"],
+			required: ["method", "url", "intervalType", "interval", "cronInterval"],
 		},
-	};
+	};	
 
 	public remove: FastifySchema = {
 		params: {

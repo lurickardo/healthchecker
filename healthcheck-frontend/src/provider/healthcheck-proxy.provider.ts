@@ -62,7 +62,7 @@ export class HealthckeckProxyProvider {
 	public async createScheduleRequest(
 		schedule: Schedule,
 	): Promise<DefaultResponse> {
-		try {
+		try {			
 			const config: AxiosRequestConfig = {
 				method: "POST",
 				url: `${this.baseURL}/v1/healthcheck/schedule/request`,
@@ -71,6 +71,7 @@ export class HealthckeckProxyProvider {
 				},
 				data: schedule,
 			};
+
 			const response = await axios(config);
 
 			return {

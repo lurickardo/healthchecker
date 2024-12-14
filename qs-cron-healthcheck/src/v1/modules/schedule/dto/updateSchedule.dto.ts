@@ -70,9 +70,10 @@ const updateScheduleSchema = z
 			}),
 		}),
 		interval: z
-			.string({ message: "Interval cannot be empty." })
-			.min(1, { message: "Interval cannot be empty." })
-			.regex(/^\d+$/, { message: "Interval must be a number." }),
+			.string()
+			.refine((val) => /^[1-9]\d*$/.test(val), {
+				message: "Interval must be a positive integer",
+			}),
 		params: z.record(z.string(), z.string(), {
 			errorMap: () => ({
 				message: "Params must be an object with string keys and values.",

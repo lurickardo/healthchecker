@@ -84,7 +84,7 @@ export class ResponseRepository {
 			const allDocs = await this.db.list({ include_docs: true });
 
 			if (!allDocs.rows.length) {
-				console.log("Nenhum documento encontrado para deletar.");
+				console.log("No documents to delete.");
 				return false;
 			}
 
@@ -95,10 +95,10 @@ export class ResponseRepository {
 			}));
 
 			await this.db.bulk({ docs: bulkDeletes });
-			console.log("Todos os documentos foram deletados.");
+			console.log("All documents deleted.");
 			return true;
 		} catch (error) {
-			console.error("Erro ao deletar todos os documentos:", error);
+			console.error("Error on delete documents:", error);
 			throw error;
 		}
 	}

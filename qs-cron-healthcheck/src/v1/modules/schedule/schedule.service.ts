@@ -10,8 +10,6 @@ import { ScheduleEntity } from "../../../database/couchdb/entity/schedule.entity
 
 export const scheduleService = {
 	create: async (createScheduleDto: CreateScheduleDto) => {
-		console.log(createScheduleDto);
-
 		const scheduleRepository = new ScheduleRepository();
 
 		const schedule = await scheduleRepository.create({
@@ -27,7 +25,7 @@ export const scheduleService = {
 		});
 
 		await scheduleManager.scheduleJob(schedule);
-		console.log(`Schedule criado: ${schedule._id}`);
+		console.log(`Schedule created: ${schedule._id}`);
 	},
 
 	update: async (updateScheduleDto: UpdateScheduleDto) => {
@@ -63,7 +61,7 @@ export const scheduleService = {
 		}
 
 		await scheduleManager.scheduleJob(updated);
-		console.log(`Schedule atualizado: ${updated._id}`);
+		console.log(`Schedule updated: ${updated._id}`);
 	},
 
 	remove: async (removeScheduleDto: RemoveScheduleDto) => {
@@ -82,6 +80,6 @@ export const scheduleService = {
 		}
 
 		await scheduleManager.removeJob(scheduleId);
-		console.log(`Schedule removido: ${scheduleId}`);
+		console.log(`Schedule removed: ${scheduleId}`);
 	},
 };

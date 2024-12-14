@@ -103,7 +103,7 @@ export function addDaysOfWeek(schedule: any): Schedule {
 		{ key: "thursday", value: 4 },
 		{ key: "friday", value: 5 },
 		{ key: "saturday", value: 6 },
-		{ key: "sunday", value: 0 },
+		{ key: "sunday", value: 7 },
 	];
 
 	const daysOfWeek: number[] = [];

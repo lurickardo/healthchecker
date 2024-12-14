@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest, RouteHandlerMethod } from "fastify";
 import { transformSendRequestDto } from "./dto";
 import { HealthcheckService } from "./healthcheck.service";
-import { transformCreateScheduleRequest } from "./dto/createScheduleRequest.dto";
+import { transformCreateScheduleRequest } from "./dto";
 
 export class HealthcheckController {
 	private healthcheckService: HealthcheckService;

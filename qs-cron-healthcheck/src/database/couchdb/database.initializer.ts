@@ -18,24 +18,22 @@ export class DatabaseInitializer {
 			for (const [collectionName, dbName] of Object.entries(this.collections)) {
 				if (!existingDbs.includes(dbName)) {
 					console.log(
-						`Banco de dados "${dbName}" (${collectionName}) não encontrado. Criando...`,
+						`Database"${dbName}" (${collectionName}) not found. Creating...`,
 					);
 					await couchInstance.db.create(dbName);
 					console.log(
-						`Banco de dados "${dbName}" (${collectionName}) criado com sucesso.`,
+						`Database "${dbName}" (${collectionName}) create successfully.`,
 					);
 					return;
 				}
-				
+
 				if (env.databases.couchdb.clearOnInit) {
 					const allDocs = await couchInstance.db
 						.use(dbName)
 						.list({ include_docs: true });
 
 					if (allDocs.rows.length === 0) {
-						console.log(
-							`Banco de dados "${dbName}" (${collectionName}) já está vazio.`,
-						);
+						console.log(`Database "${dbName}" (${collectionName}) its void.`);
 						continue;
 					}
 
@@ -47,7 +45,7 @@ export class DatabaseInitializer {
 
 					await couchInstance.db.use(dbName).bulk({ docs: bulkDeletes });
 					console.log(
-						`Banco de dados "${dbName}" (${collectionName}) limpo com sucesso.`,
+						`Database"${dbName}" (${collectionName}) clear successfully.`,
 					);
 				}
 			}
