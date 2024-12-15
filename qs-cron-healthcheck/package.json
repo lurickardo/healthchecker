@@ -1,5 +1,5 @@
 {
-	"name": "skeleton",
+	"name": "qscronhealthcheck",
 	"version": "1.0.0",
 	"description": "Generic software architecture framework in Node.js using Fastify, designed to provide a flexible and reusable foundation for application development.",
 	"author": "Luiz Ricardo Santos",
