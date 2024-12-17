@@ -4,14 +4,14 @@ export class ResponseEntity {
 	customId: any;
 	scheduleId: string;
 	response: object;
-	datetime: Date | "manual" | "init";
+	datetime: Date;
 	taskName: string;
 	timezone: string;
 
 	constructor(
 		scheduleId: string,
 		response: object,
-		datetime: Date | "manual" | "init",
+		datetime: Date,
 		taskName: string,
 		timezone: string,
 		_id?: string,

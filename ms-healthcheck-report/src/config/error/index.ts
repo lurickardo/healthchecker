@@ -19,6 +19,14 @@ export const errorHandler = (
 	reply: FastifyReply,
 ) => {
 	const error = { ...genericError };
+	
+	if (isFlowError(error)) {
+		return reply.status(error.statusCode).send({
+			statusCode: error.statusCode,
+			message: error.message,
+			timestamp: new Date(),
+		});
+	}
 
 	if (isFastifyError(error)) {
 		const validationContext = error.validationContext
@@ -43,13 +51,6 @@ export const errorHandler = (
 		});
 	}
 
-	if (isFlowError(error)) {
-		return reply.status(error.statusCode).send({
-			statusCode: error.statusCode,
-			message: error.message,
-			timestamp: new Date(),
-		});
-	}
 
 	process.stdout.write(
 		`\n\n\x1b[41m--- UNEXPECTED ERROR --- \x1b[0m\n ${

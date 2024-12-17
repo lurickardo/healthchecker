@@ -1,4 +1,4 @@
-import type { FastifyReply, FastifyRequest, RouteHandlerMethod } from "fastify";
+import type { FastifyReply, RouteHandlerMethod } from "fastify";
 import { ResponseService } from "./response.service";
 
 export class ResponseController {
@@ -16,10 +16,10 @@ export class ResponseController {
 	};
 
 	public listAll = async (
-		request: FastifyRequest,
+		{ query: { from, to, quickInterval, limit, skip } },
 		reply: FastifyReply,
 	): Promise<RouteHandlerMethod> => {
-		return reply.code(200).send(await this.responseService.listAll());
+		return reply.code(200).send(await this.responseService.listAll(from, to, quickInterval, limit, skip));
 	};
 
 }

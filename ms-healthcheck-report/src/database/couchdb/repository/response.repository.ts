@@ -28,13 +28,33 @@ export class ResponseRepository {
 
 	public async find(
 		selector: Partial<ResponseEntity> = {},
+		limit?: number,
+		skip?: number,
 	): Promise<ResponseEntity[]> {
 		const query = {
 			selector: { ...selector },
+			limit: limit,
+			skip: skip,
 		};
 		const result = await this.db.find(query);
 		return result.docs;
 	}
+
+	public async count(selector: Partial<ResponseEntity> = {}): Promise<number> {
+		try {
+			const query = {
+				selector: { ...selector },
+				use_index: "_all_docs"
+			};
+			const result = await this.db.find(query);
+	
+			return result.docs.length;
+		} catch (error) {
+			console.error("Error counting documents:", error);
+			throw error;
+		}
+	}
+	
 
 	public async create(
 		entity: Partial<ResponseEntity>,

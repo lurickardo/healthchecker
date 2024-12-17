@@ -11,20 +11,19 @@ export class ResponseSchema {
 			},
 			required: ["id"],
 		},
-		headers: {
-			type: "object",
-			properties: {
-				Authorization: { type: "string" },
-			},
-			additionalProperties: true,
-		},
 	};
 
 	public listAll: FastifySchema = {
-		params: {
+		querystring: {
 			type: "object",
-			properties: {},
-			required: [],
+			properties: {
+				from: { type: "string" },
+				to: { type: "string" },
+				quickInterval: { type: "string" },
+				limit: { type: "number" },
+				skip: { type: "number" },
+			},
+			required: ["limit"],
 		},
 		headers: {
 			type: "object",

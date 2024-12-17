@@ -1,6 +1,5 @@
 import fastifySwagger from "@fastify/swagger";
-import swaggerScalar from "@scalar/fastify-api-reference";
-import type { FastifyInstance } from "fastify";
+import fastifySwaggerUI from "@fastify/swagger-ui";
 import * as application from "../../package.json";
 
 export const swagger = async (fastify, config: any) => {
@@ -28,12 +27,10 @@ export const swagger = async (fastify, config: any) => {
 		},
 	});
 
-	await fastify.register(swaggerScalar, {
+	await fastify.register(fastifySwaggerUI, {
 		routePrefix: `${config.stripPrefix.path}/docs`,
-		configuration: {
-			theme: "bluePlanet",
-			layout: "classic",
-			darkMode: true,
+		config: {
+			dynamicSpec: true,
 		},
 	});
 };
