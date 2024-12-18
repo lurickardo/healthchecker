@@ -23,8 +23,6 @@ export class HealthcheckProxyProvider {
 		listResponseSchema: ListResponseSchema,
 	): Promise<DefaultResponse> {
 		try {
-			console.log(listResponseSchema);
-
 			const params = new URLSearchParams({
 				...(listResponseSchema.from && listResponseSchema.to
 					? { from: listResponseSchema.from, to: listResponseSchema.to }
@@ -38,8 +36,6 @@ export class HealthcheckProxyProvider {
 				limit: listResponseSchema.limit.toString(),
 				skip: listResponseSchema.skip.toString(),
 			});
-
-			console.log(params.toString());
 
 			const config: AxiosRequestConfig = {
 				method: "GET",
