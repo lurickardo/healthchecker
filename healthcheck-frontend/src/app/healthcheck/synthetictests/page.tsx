@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { HealthcheckProxyProvider } from "@/provider/ms-healthcheck-report";
 import { ResponseRecord } from "@/@interfaces/ResponseRecord";
-import { calculateSla } from "@/utils/utils";
+import { calculateSla, exportToExcel, exportToPDF } from "@/utils/utils";
 
 dayjs.extend(relativeTime);
 
@@ -58,6 +58,39 @@ export default function SyntheticTests() {
 
     fetchInitialData();
   }, []);
+
+  const handleExport = () => {
+    const headers = [
+      "Status",
+      "Relative Date",
+      "Full Date",
+      "Time",
+      "Run Type",
+    ];
+    const rows = data.map((item) => {
+      const passed = item.response?.status < 300;
+      const statusText = passed ? "PASSED" : "FAILED";
+      const relative = dayjs(item.datetime).fromNow();
+      const date = dayjs(item.datetime).format("MMM DD, YYYY");
+      const time = dayjs(item.datetime).format("HH:mm");
+      const runType = "Scheduled";
+      return [statusText, relative, date, time, runType];
+    });
+
+    exportToExcel({
+      headers,
+      data: rows,
+      fileName: "test_runs.xlsx",
+    });
+
+    exportToPDF({
+      title: "Test Runs Report",
+      headers,
+      data: rows,
+      fileName: "test_runs.pdf",
+      footer: `SLA Status: ${slaStatus}, SLA Percentage: ${slaPercent}%`,
+    });
+  };
 
   let trs: JSX.Element[][] = [];
 
@@ -156,6 +189,7 @@ export default function SyntheticTests() {
           icon={<Download width={24} height={24} aria-hidden="true" />}
           label="Export"
           className="flex justify-center items-center px-4 py-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"
+          onClick={handleExport}
         />
       </Footer>
     </Template>

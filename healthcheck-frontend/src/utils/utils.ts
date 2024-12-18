@@ -1,5 +1,6 @@
 import { ResponseRecord } from "@/@interfaces/ResponseRecord";
-import { CreateScheduleSchema } from "@/schemas/schedule.schema";
+import { utils, writeFile } from "xlsx";
+import jsPDF from "jspdf";
 
 export const markPage = (
 	pathname: string | undefined,
@@ -158,4 +159,77 @@ export function calculateSla(
 	const slaPercent = Math.round(successRate);
 
 	return { slaStatus, slaPercent };
+}
+
+export function exportToExcel({
+	headers,
+	data,
+	fileName = "export.xlsx",
+}: {
+	headers: string[];
+	data: (string | number)[][];
+	fileName?: string;
+}) {
+	const sheetData = [headers, ...data];
+	const ws = utils.aoa_to_sheet(sheetData);
+	const wb = utils.book_new();
+	utils.book_append_sheet(wb, ws, "Sheet1");
+	writeFile(wb, fileName);
+}
+
+export function exportToPDF({
+	title,
+	headers,
+	data,
+	fileName = "export.pdf",
+	footer,
+}: {
+	title: string;
+	headers: string[];
+	data: (string | number)[][];
+	fileName?: string;
+	footer?: string;
+}) {
+	const doc = new jsPDF({
+		orientation: "l",
+		unit: "pt",
+		format: "a4",
+	});
+
+	doc.setFontSize(14);
+	doc.text(title, 40, 40);
+
+	let yPos = 80;
+	const lineHeight = 20;
+
+	doc.setFont("helvetica", "bold");
+	headers.forEach((header, index) => {
+		doc.text(header, 40 + index * 120, yPos);
+	});
+
+	doc.setFont("helvetica", "normal");
+	yPos += lineHeight;
+
+	data.forEach((row) => {
+		row.forEach((cell, index) => {
+			doc.text(String(cell), 40 + index * 120, yPos);
+		});
+		yPos += lineHeight;
+
+		if (yPos > 550) {
+			doc.addPage();
+			yPos = 80;
+			headers.forEach((header, index) => {
+				doc.text(header, 40 + index * 120, yPos);
+			});
+			yPos += lineHeight;
+		}
+	});
+
+	if (footer) {
+		yPos += lineHeight;
+		doc.text(footer, 40, yPos);
+	}
+
+	doc.save(fileName);
 }
