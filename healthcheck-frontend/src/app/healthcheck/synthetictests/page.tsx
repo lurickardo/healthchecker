@@ -24,7 +24,7 @@ export default function SyntheticTests() {
   const [data, setData] = useState<ResponseRecord[]>([]);
   const [currentSla, setCurrentSla] = useState<number>(1);
 
-  const th = ["Status", "Date", "Run Type", "Actions"];
+  const th = ["Status", "Date", "Run Type", "Status Code", "Actions"];
 
   const { slaStatus, slaPercent } = calculateSla(data, currentSla);
 
@@ -66,15 +66,17 @@ export default function SyntheticTests() {
       "Full Date",
       "Time",
       "Run Type",
+      "Status Code",
     ];
     const rows = data.map((item) => {
       const passed = item.response?.status < 300;
       const statusText = passed ? "PASSED" : "FAILED";
+      const statusCode = item.response?.status;
       const relative = dayjs(item.datetime).fromNow();
       const date = dayjs(item.datetime).format("MMM DD, YYYY");
       const time = dayjs(item.datetime).format("HH:mm");
       const runType = "Scheduled";
-      return [statusText, relative, date, time, runType];
+      return [statusText, relative, date, time, runType, statusCode];
     });
 
     exportToExcel({
@@ -97,7 +99,7 @@ export default function SyntheticTests() {
   if (loading) {
     trs = [
       [
-        <td key="loading" colSpan={4}>
+        <td key="loading" colSpan={5}>
           <Spinner
             className=" items-center mx-auto m-72"
             fill="fill-hc-green-300"
@@ -110,10 +112,9 @@ export default function SyntheticTests() {
       [
         <td
           key="no-data"
-          colSpan={4}
+          colSpan={5}
           className="px-12 py-4 whitespace-nowrap text-center"
         >
-          No Data Found
         </td>,
       ],
     ];
@@ -128,6 +129,7 @@ export default function SyntheticTests() {
       const relative = dayjs(item.datetime).fromNow();
       const date = dayjs(item.datetime).format("MMM DD, YYYY");
       const time = dayjs(item.datetime).format("HH:mm");
+      const statusCode = item.response?.status;
 
       return [
         <td
@@ -144,6 +146,9 @@ export default function SyntheticTests() {
         </td>,
         <td key={`runtype-${idx}`} className="px-12 py-4 whitespace-nowrap">
           <span className="font-bold">Scheduled</span>
+        </td>,
+        <td key={`statusCode-${idx}`} className={`px-12 py-4 whitespace-nowrap ${statusCode < 300 ? 'text-green-400' : 'text-red-400'}`}>
+          <span className="font-bold">{statusCode}</span>
         </td>,
         <td
           key={`actions-${idx}`}
