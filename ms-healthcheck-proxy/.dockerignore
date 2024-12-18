@@ -41,7 +41,14 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+test/*
+
 ##
 *lock*
 .env
+.env_example
 Makefile
+biome.json
+.gitignore
+README.md
+LICENSE

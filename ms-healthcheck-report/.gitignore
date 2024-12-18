@@ -43,5 +43,4 @@ lerna-debug.log*
 
 ##
 *lock*
-.env
 Makefile

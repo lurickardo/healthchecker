@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  couchdb:
+    image: couchdb:3.3
+    container_name: couchdb
+    restart: always
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=admin123
+    volumes:
+      - couchdb_data:/opt/couchdb/data
+
+  rabbitmq:
+    image: rabbitmq:3.10-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+
+volumes:
+  couchdb_data:
+  rabbitmq_data:
