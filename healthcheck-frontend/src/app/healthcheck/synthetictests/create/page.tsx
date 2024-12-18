@@ -1,4 +1,3 @@
-// pages/healthcheck/synthetictests/create/page.tsx
 "use client";
 
 import React from "react";

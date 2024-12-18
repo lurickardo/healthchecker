@@ -30,12 +30,12 @@ export default function Alert({
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [opacity, setOpacity] = useState(0);
-  const [isMouseOver, setIsMouseOver] = useState(false); // Added state to track mouse over
+  const [isMouseOver, setIsMouseOver] = useState(false);
 
   useEffect(() => {
     setOpacity(1);
     const timer = setTimeout(() => {
-      if (!isMouseOver) { // Check if mouse is not over the alert before setting opacity to 0
+      if (!isMouseOver) {
         setOpacity(0);
         setTimeout(() => {
           setIsVisible(false);
@@ -54,8 +54,8 @@ export default function Alert({
       className={`fixed min-w-72 min-h-14 top-4 right-4 bg-hc-black-400 border-2 ${borderColor} ${textColor} p-4 rounded shadow-lg transition-opacity duration-1000 ease-in-out`}
       style={{ opacity }}
       role="alert"
-      onMouseEnter={() => setIsMouseOver(true)} // Set isMouseOver to true on mouse enter
-      onMouseLeave={() => setIsMouseOver(false)} // Set isMouseOver to false on mouse leave
+      onMouseEnter={() => setIsMouseOver(true)}
+      onMouseLeave={() => setIsMouseOver(false)}
     >
       <div className={`flex items-center`}>
         <Icon className="mr-2" size={20} />

@@ -31,6 +31,3 @@ const HighlightEditableText = () => {
 };
 
 export default HighlightEditableText;
-// é so ter uma funcao acompanhando cada caractere sendo escrito e sendo invocada na hora
-// essa funcao ira pegar o texto preenchido, fazer o replace e estilizar, depois colar novamente
-// pode ser criado um componente somente para isso, entao troca os input por esse caso tenha estilizacao

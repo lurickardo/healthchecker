@@ -12,7 +12,7 @@ export const createScheduleSchema = z.object({
       (value) => {
         try {
           if (value) {
-            JSON.parse(value); // Verifica se o JSON é válido
+            JSON.parse(value);
           }
           return true;
         } catch {

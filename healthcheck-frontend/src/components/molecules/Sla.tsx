@@ -1,5 +1,5 @@
 export interface IFooter {
-  status: "VIOLATED" | "SUCCESS";
+  status: "VIOLATED" | "PASSED";
   percent: number;
 }
 
@@ -9,7 +9,7 @@ export default function Sla({ status, percent }: IFooter) {
       statusClassName: "text-red-400 bg-red-100",
       textClassName: "text-red-400",
     },
-    SUCCESS: {
+    PASSED: {
       statusClassName: "text-green-400 bg-green-100",
       textClassName: "text-green-400",
     },

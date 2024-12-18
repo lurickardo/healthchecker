@@ -2,67 +2,80 @@ import { ListResponseSchema } from "@/schemas/listResponse.schema";
 import axios, { AxiosRequestConfig } from "axios";
 
 interface DefaultResponse {
-  success: boolean;
-  data?: any;
-  status?: number;
-  message?: string;
-  count?: number;
-  total?: number;
-  limit?: number;
-  skip?: number;
+	success: boolean;
+	data?: any;
+	status?: number;
+	message?: string;
+	count?: number;
+	total?: number;
+	limit?: number;
+	skip?: number;
 }
 
 export class HealthcheckProxyProvider {
-  private baseURL: string;
+	private baseURL: string;
 
-  constructor() {
-    this.baseURL = "http://localhost:3002/api/mshealthcheckreport";
-  }
+	constructor() {
+		this.baseURL = "http://localhost:3002/api/mshealthcheckreport";
+	}
 
-  public async listResponses(listResponseSchema: ListResponseSchema): Promise<DefaultResponse> {
-    try {
-      const params = new URLSearchParams({
-        ...(listResponseSchema.from && { from: listResponseSchema.from }),
-        ...(listResponseSchema.to && { to: listResponseSchema.to }),
-        ...(listResponseSchema.quickInterval && { quickInterval: listResponseSchema.quickInterval }),
-        limit: listResponseSchema.limit.toString(),
-        skip: listResponseSchema.skip.toString(),
-      });
+	public async listResponses(
+		listResponseSchema: ListResponseSchema,
+	): Promise<DefaultResponse> {
+		try {
+			console.log(listResponseSchema);
 
-      const config: AxiosRequestConfig = {
-        method: "GET",
-        url: `${this.baseURL}/v1/response?${params.toString()}`,
-        headers: {
-          "accept": "application/json",
-        },
-      };
+			const params = new URLSearchParams({
+				...(listResponseSchema.from && listResponseSchema.to
+					? { from: listResponseSchema.from, to: listResponseSchema.to }
+					: {}),
+				...(listResponseSchema.quickInterval && {
+					quickInterval: listResponseSchema.quickInterval,
+					...(listResponseSchema.from && listResponseSchema.to
+						? {}
+						: { quickInterval: listResponseSchema.quickInterval }),
+				}),
+				limit: listResponseSchema.limit.toString(),
+				skip: listResponseSchema.skip.toString(),
+			});
 
-      const response = await axios(config);
+			console.log(params.toString());
 
-      return {
-        success: true,
-        data: response.data.data,
-        count: response.data.count,
-        total: response.data.total,
-        limit: listResponseSchema.limit,
-        skip: listResponseSchema.skip,
-        status: response.status,
-      };
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        return {
-          success: false,
-          message:
-            error.response?.data?.message || "An error occurred during the request.",
-          status: error.response?.status || 500,
-        };
-      }
+			const config: AxiosRequestConfig = {
+				method: "GET",
+				url: `${this.baseURL}/v1/response?${params.toString()}`,
+				headers: {
+					accept: "application/json",
+				},
+			};
 
-      return {
-        success: false,
-        message: "An unexpected error occurred.",
-        status: 500,
-      };
-    }
-  }
+			const response = await axios(config);
+
+			return {
+				success: true,
+				data: response.data.data,
+				count: response.data.count,
+				total: response.data.total,
+				limit: listResponseSchema.limit,
+				skip: listResponseSchema.skip,
+				status: response.status,
+			};
+		} catch (error: any) {
+			if (axios.isAxiosError(error)) {
+				return {
+					success: false,
+					message:
+						error.response?.data?.message ||
+						"An error occurred during the request.",
+					status: error.response?.status || 500,
+				};
+			}
+
+			return {
+				success: false,
+				message: "An unexpected error occurred.",
+				status: 500,
+			};
+		}
+	}
 }

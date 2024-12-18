@@ -79,7 +79,7 @@ export const servicesLinks = () => {
           >
             <Link
               label={service.label}
-              href={service.href || "#"} // Valor padrão para evitar `undefined`
+              href={service.href || "#"}
               icon={
                 typeof service.icon.path === "string" ? (
                   <Image
@@ -153,7 +153,7 @@ export const servicesIcons = () => {
           >
             <Link
               label={""}
-              href={service.href || "#"} // Valor padrão para evitar `undefined`
+              href={service.href || "#"}
               icon={
                 typeof service.icon.path === "string" ? (
                   <Image

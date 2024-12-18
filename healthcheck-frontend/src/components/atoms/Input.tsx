@@ -3,18 +3,18 @@ import { HTMLInputTypeAttribute } from "react";
 interface InputProps {
   type?: HTMLInputTypeAttribute | undefined;
   value?: string;
-  name: string;
+  name?: string;
   placeholder?: string;
   defaultValue?: string;
   className?: string;
   label?: string;
   labelClassName?: string;
   icon?: React.ReactNode;
-  min?: number;
-  max?: number;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  min?: any;
+  max?: any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any;
+  onFocus?: any;
+  onBlur?: any;
 }
 
 export default function Input({

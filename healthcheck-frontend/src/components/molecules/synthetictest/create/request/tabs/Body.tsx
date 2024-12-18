@@ -20,9 +20,9 @@ const Body: React.FC = () => {
         defaultLanguage="json"
         value={jsonCode}
         onChange={handleEditorChange}
-        theme="vs-dark" // Define o tema dark
+        theme="vs-dark"
         options={{
-          fontSize: 16, // Aumenta o tamanho da fonte
+          fontSize: 16,
           automaticLayout: true,
           minimap: { enabled: false },
           wordWrap: "on",

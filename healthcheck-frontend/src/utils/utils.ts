@@ -1,3 +1,4 @@
+import { ResponseRecord } from "@/@interfaces/ResponseRecord";
 import { CreateScheduleSchema } from "@/schemas/schedule.schema";
 
 export const markPage = (
@@ -17,7 +18,7 @@ export const routeLayer = (
 export const formatDateToBR = (dateString: string): string => {
 	const date = new Date(dateString);
 	const day = String(date.getDate()).padStart(2, "0");
-	const month = String(date.getMonth() + 1).padStart(2, "0"); // Mês começa do zero
+	const month = String(date.getMonth() + 1).padStart(2, "0");
 	const year = date.getFullYear();
 	const hours = String(date.getHours()).padStart(2, "0");
 	const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -130,7 +131,7 @@ function addCronInterval(schedule: any): Schedule {
 	if (daysOfWeek && Array.isArray(daysOfWeek) && daysOfWeek.length > 0) {
 		cronInterval += ` ${daysOfWeek.join(",")}`;
 	} else {
-		cronInterval += " *"; // Default para todos os dias
+		cronInterval += " *";
 	}
 
 	return {
@@ -141,4 +142,20 @@ function addCronInterval(schedule: any): Schedule {
 
 export function formatScheduleRequest(schedule: any): Schedule {
 	return addCronInterval(addDaysOfWeek(schedule));
+}
+
+export function calculateSla(
+	data: ResponseRecord[],
+	slaTarget: number,
+): { slaStatus: "VIOLATED" | "PASSED"; slaPercent: number } {
+	const total = data.length;
+	const successCount = data.filter(
+		(item) => item.response?.status < 300,
+	).length;
+	const successRate = total > 0 ? (successCount / total) * 100 : 0;
+	const slaViolated = successRate < slaTarget;
+	const slaStatus = slaViolated ? "VIOLATED" : "PASSED";
+	const slaPercent = Math.round(successRate);
+
+	return { slaStatus, slaPercent };
 }

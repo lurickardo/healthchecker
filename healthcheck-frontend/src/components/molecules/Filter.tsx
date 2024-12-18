@@ -1,57 +1,152 @@
-import { Search } from "lucide-react";
-import Button from "../atoms/Button";
-import Input from "../atoms/Input";
-import Select from "../atoms/Select";
+"use client";
 
-export default function Filter() {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { HealthcheckProxyProvider } from "@/provider/ms-healthcheck-report";
+import Button from "../atoms/Button";
+import { Search } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
+import Spinner from "../atoms/Spinner";
+
+const filterSchema = z.object({
+  sla: z.string().refine((val) => /^\d+$/.test(val), {
+    message: "SLA inválido",
+  }),
+  from: z.string().optional(),
+  to: z.string().optional(),
+  timeInterval: z.string().optional(),
+});
+
+type FilterFormValues = z.infer<typeof filterSchema>;
+
+export default function Filter({
+  onSearchResult,
+  setLoading,
+}: {
+  onSearchResult: (result: { data: any; sla: number }) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FilterFormValues>({
+    resolver: zodResolver(filterSchema),
+    defaultValues: {
+      sla: "1",
+      from: "",
+      to: "",
+      timeInterval: "1d",
+    },
+  });
+
+  const submitForm = async (data: FilterFormValues) => {
+    setLoading(true);
+    const provider = new HealthcheckProxyProvider();
+    try {
+      const response = await provider.listResponses({
+        from: data.from,
+        to: data.to,
+        quickInterval: data.timeInterval,
+        limit: 10,
+        skip: 0,
+      });
+      onSearchResult({ data: response.data, sla: Number(data.sla) });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <form className="flex justify-between items-center gap-8">
+    <form
+      onSubmit={handleSubmit(submitForm)}
+      className="flex justify-between items-center gap-8"
+    >
       <div className="flex items-center">
         <label className="mr-2 whitespace-nowrap">SLA:</label>
-        <Input
+        <input
           type="number"
-          name="sla"
-          className="w-20 h-10"
+          {...register("sla")}
+          className="w-18 h-10 focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg"
           defaultValue="1"
           min={1}
           max={100}
         />
         <label className="text-xl ml-1">%</label>
+        {errors.sla && (
+          <span className="text-red-500 ml-2">{errors.sla.message}</span>
+        )}
       </div>
       <div className="flex items-center">
         <label className="mr-2">From:</label>
-        <Input type="date" name="from" className="w-32 h-10" />
+        <input
+          type="date"
+          {...register("from")}
+          className="w-34 h-10 focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg"
+        />
+        {errors.from && (
+          <span className="text-red-500 ml-2">{errors.from.message}</span>
+        )}
       </div>
       <div className="flex items-center">
         <label className="mr-2">To:</label>
-        <Input type="date" name="to" className="w-32 h-10" />
-      </div>
-      <div className="flex justify-between items-center">
-        <span className="mr-2 whitespace-nowrap">Quick interval:</span>
-        <Select
-          name="timeInterval"
-          options={[
-            { value: "1hr", label: "1hr" },
-            { value: "2hr", label: "2hr" },
-            { value: "4hr", label: "4hr" },
-            { value: "8hr", label: "8hr" },
-            { value: "1d", label: "1d" },
-            { value: "2d", label: "2d" },
-            { value: "3d", label: "3d" },
-            { value: "7d", label: "7d" },
-            { value: "14d", label: "14d" },
-            { value: "30d", label: "30d" },
-            { value: "60d", label: "60d" },
-            { value: "90d", label: "90d" },
-          ]}
-          className="w-24"
+        <input
+          type="date"
+          {...register("to")}
+          className="w-34 h-10 focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg"
         />
+        {errors.to && (
+          <span className="text-red-500 ml-2">{errors.to.message}</span>
+        )}
+      </div>
+      <div className="flex items-center">
+        <label className="mr-2 whitespace-nowrap">Quick interval:</label>
+        <select
+          {...register("timeInterval")}
+          name="timeInterval"
+          className="w-22 focus:outline-hc-green-500 text-black rounded px-2 py-2 text-lg h-10"
+          defaultValue={"1d"}
+        >
+          <option value="1hr">1h</option>
+          <option value="2hr">2h</option>
+          <option value="4hr">4h</option>
+          <option value="8hr">8h</option>
+          <option value="16hr">16h</option>
+          <option value="1d">1d</option>
+          <option value="2d">2d</option>
+          <option value="3d">3d</option>
+          <option value="4d">4d</option>
+          <option value="5d">5d</option>
+          <option value="6d">6d</option>
+          <option value="1w">1w</option>
+          <option value="2w">2w</option>
+          <option value="3w">3w</option>
+          <option value="1m">1m</option>
+          <option value="2m">2m</option>
+          <option value="3m">3m</option>
+        </select>
       </div>
       <Button
+        label=""
+        name="send"
         className="flex items-center whitespace-nowrap hover:bg-hc-black-200 border-2 border-hc-green-300 text-xl rounded"
-        label="Search"
-        icon={<Search />}
-      />
+        isSubmitting={isSubmitting}
+      >
+        {isSubmitting ? (
+          <Spinner
+            className="flex py-2 text-lg space-x-2 cursor-pointer h-10 w-[5.7rem]"
+            fill="fill-hc-green-500"
+          />
+        ) : (
+          <div className="flex py-2 text-lg space-x-2 cursor-pointer h-10">
+            {<Search />}
+            <span>Search</span>
+          </div>
+        )}
+      </Button>
     </form>
   );
 }
