@@ -9,13 +9,25 @@ import Sla from "@/components/molecules/Sla";
 import Table from "@/components/organisms/Table";
 import Titlebar from "@/components/organisms/Titlebar";
 import Template from "@/components/templates/Template";
-import { ClipboardPen, Download, Plus, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+  CircleCheckBig,
+  ClipboardPen,
+  Download,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { HealthcheckProxyProvider } from "@/provider/ms-healthcheck-report";
+import { HealthcheckReportProvider } from "@/provider/ms-healthcheck-report";
+import { HealthckeckProxyProvider } from "@/provider/healthcheck-proxy.provider";
 import { ResponseRecord } from "@/@interfaces/ResponseRecord";
 import { calculateSla, exportToExcel, exportToPDF } from "@/utils/utils";
+import Alert, { AlertProps } from "@/components/atoms/Alert";
+import { SlaStatus } from "@/@interfaces/sla";
 
 dayjs.extend(relativeTime);
 
@@ -25,10 +37,26 @@ export default function SyntheticTests() {
   const [currentSla, setCurrentSla] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertProps, setAlertProps] = useState<AlertProps>({
+    title: "Alert",
+    content: "",
+    icon: CheckCircle,
+    borderColor: "border-hc-red-400",
+    textColor: "text-hc-red-400",
+    onClose: () => setShowAlert(false),
+    duration: 10000,
+  });
+  const [filters, setFilters] = useState({
+    from: "",
+    to: "",
+    quickInterval: "1d",
+  });
 
-  const th = ["Status", "Date", "Run Type", "Status Code", "Actions"];
+  const th = ["Status", "Date", "Run Type", "Status Code", "Schedule Actions"];
 
-  const { slaStatus, slaPercent } = calculateSla(data, currentSla);
+  const [slaStatus, setSlaStatus] = useState<SlaStatus>("PASSED");
+  const [slaPercent, setSlaPercent] = useState<number>(100);
 
   const handleFilterResult = (result: any) => {
     setData(result.data);
@@ -39,12 +67,12 @@ export default function SyntheticTests() {
 
   const fetchPageData = async (page: number) => {
     setLoading(true);
-    const provider = new HealthcheckProxyProvider();
+    const reportProvider = new HealthcheckReportProvider();
     try {
-      const response = await provider.listResponses({
-        from: "",
-        to: "",
-        quickInterval: "1d",
+      const response = await reportProvider.listResponses({
+        from: filters.from,
+        to: filters.to,
+        quickInterval: filters.quickInterval,
         limit: 8,
         skip: (page - 1) * 8,
       });
@@ -54,17 +82,35 @@ export default function SyntheticTests() {
         total: response.total,
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchAllDataForSla = async () => {
+    const reportProvider = new HealthcheckReportProvider();
+    try {
+      const response = await reportProvider.listResponses({
+        from: filters.from,
+        to: filters.to,
+        quickInterval: filters.quickInterval,
+        limit: 100000,
+        skip: 0,
+      });
+      const { slaStatus, slaPercent } = calculateSla(response.data, 1);
+      setSlaStatus(slaStatus);
+      setSlaPercent(slaPercent);
+    } catch (error) {
+      console.error("Error fetching data for SLA:", error);
+    }
+  };
+
   const fetchAllDataForExport = async () => {
     setLoading(true);
-    const provider = new HealthcheckProxyProvider();
+    const reportProvider = new HealthcheckReportProvider();
     try {
-      const response = await provider.listResponses({
+      const response = await reportProvider.listResponses({
         from: "",
         to: "",
         quickInterval: "1d",
@@ -73,7 +119,7 @@ export default function SyntheticTests() {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching all data for export:", error);
+      console.log("Error fetching all data for export:", error);
       return [];
     } finally {
       setLoading(false);
@@ -83,6 +129,10 @@ export default function SyntheticTests() {
   useEffect(() => {
     fetchPageData(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchAllDataForSla();
+  }, [filters]);
 
   const handleExport = async () => {
     const headers = [
@@ -120,6 +170,33 @@ export default function SyntheticTests() {
     });
   };
 
+  const deleteSchedule = async (scheduleId: string) => {
+    setLoading(true);
+    const proxyProvider = new HealthckeckProxyProvider();
+    try {
+      const response = await proxyProvider.deleteScheduleRequest(scheduleId);
+      if (response.success) {
+        console.log("Schedule deleted successfully.");
+        setAlertProps({
+          title: "Success",
+          content: "Schedule deleted successfully",
+          icon: CircleCheckBig,
+          borderColor: "border-hc-green-400",
+          textColor: "text-hc-green-400",
+          onClose: () => setShowAlert(false),
+          duration: 8000,
+        });
+        setShowAlert(true);
+      } else {
+        console.log("Failed to delete schedule:", response.message);
+      }
+    } catch (error) {
+      console.log("Error deleting schedule:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   let trs: JSX.Element[][] = [];
 
   if (loading) {
@@ -127,7 +204,7 @@ export default function SyntheticTests() {
       [
         <td key="loading" colSpan={5}>
           <Spinner
-            className=" items-center mx-auto m-72"
+            className="items-center mx-auto m-72"
             fill="fill-hc-green-300"
           />
         </td>,
@@ -187,7 +264,7 @@ export default function SyntheticTests() {
         </td>,
         <td
           key={`actions-${idx}`}
-          className="px-12 py-[1rem] whitespace-nowrap space-x-6"
+          className="flex items-center justify-center px-12 py-[1rem] whitespace-nowrap space-x-6"
         >
           <Button
             label=""
@@ -196,8 +273,9 @@ export default function SyntheticTests() {
             <ClipboardPen />
           </Button>
           <Button
-            label=""
+            label="Delete Schedule"
             className="bg-hc-black-400 hover:bg-hc-black-200 rounded border-2 border-hc-green-300 text-hc-white-200"
+            onClick={() => deleteSchedule(item.scheduleId)}
           >
             <Trash2 />
           </Button>
@@ -211,7 +289,13 @@ export default function SyntheticTests() {
       <Titlebar
         title="Test Runs"
         filters={
-          <Filter onSearchResult={handleFilterResult} setLoading={setLoading} />
+          <Filter
+            onSearchResult={(result: any, appliedFilters: any) => {
+              handleFilterResult(result);
+              setFilters(appliedFilters);
+            }}
+            setLoading={setLoading}
+          />
         }
         button={
           <Link
@@ -227,11 +311,13 @@ export default function SyntheticTests() {
         <Sla status={slaStatus} percent={slaPercent} />
         <div className="flex justify-between items-center mt-4">
           <Button
+            label=""
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            label="Previous"
             className="flex justify-center items-center px-4 py-2 mx-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"
-          />
+          >
+            <ArrowLeft />
+          </Button>
           <span>
             Page {currentPage} of {totalPages}
           </span>
@@ -240,9 +326,11 @@ export default function SyntheticTests() {
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages}
-            label="Next"
+            label=""
             className="flex justify-center items-center px-4 py-2 mx-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"
-          />
+          >
+            <ArrowRight />
+          </Button>
         </div>
         <Button
           icon={<Download width={24} height={24} aria-hidden="true" />}
@@ -251,6 +339,17 @@ export default function SyntheticTests() {
           onClick={handleExport}
         />
       </Footer>
+      {showAlert && (
+        <Alert
+          title={alertProps.title}
+          content={alertProps.content}
+          icon={alertProps.icon}
+          borderColor={alertProps.borderColor}
+          textColor={alertProps.textColor}
+          onClose={alertProps.onClose}
+          duration={alertProps.duration}
+        />
+      )}
     </Template>
   );
 }

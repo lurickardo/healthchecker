@@ -3,22 +3,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { HealthcheckProxyProvider } from "@/provider/ms-healthcheck-report";
+import { HealthcheckReportProvider } from "@/provider/ms-healthcheck-report";
 import Button from "../atoms/Button";
 import { Search } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import Spinner from "../atoms/Spinner";
-
-const filterSchema = z.object({
-  sla: z.string().refine((val) => /^\d+$/.test(val), {
-    message: "SLA inválido",
-  }),
-  from: z.string().optional(),
-  to: z.string().optional(),
-  timeInterval: z.string().optional(),
-});
-
-type FilterFormValues = z.infer<typeof filterSchema>;
+import {
+  FilterScheduleListSchema,
+  filterScheduleListSchema,
+} from "@/schemas/filterSchedule.schema";
 
 export default function Filter({
   onSearchResult,
@@ -31,8 +24,8 @@ export default function Filter({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FilterFormValues>({
-    resolver: zodResolver(filterSchema),
+  } = useForm<FilterScheduleListSchema>({
+    resolver: zodResolver(filterScheduleListSchema),
     defaultValues: {
       sla: "1",
       from: "",
@@ -41,9 +34,9 @@ export default function Filter({
     },
   });
 
-  const submitForm = async (data: FilterFormValues) => {
+  const submitForm = async (data: FilterScheduleListSchema) => {
     setLoading(true);
-    const provider = new HealthcheckProxyProvider();
+    const provider = new HealthcheckReportProvider();
     try {
       const response = await provider.listResponses({
         from: data.from,
@@ -52,11 +45,19 @@ export default function Filter({
         limit: 8,
         skip: 0,
       });
-      onSearchResult({
-        data: response.data,
-        sla: Number(data.sla),
-        total: response.total || 0,
-      });
+
+      onSearchResult(
+        {
+          data: response.data,
+          sla: Number(data.sla),
+          total: response.total || 0,
+        },
+        {
+          from: data.from,
+          to: data.to,
+          quickInterval: data.timeInterval,
+        }
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -72,12 +73,10 @@ export default function Filter({
       <div className="flex items-center">
         <label className="mr-2 whitespace-nowrap">SLA:</label>
         <input
-          type="number"
+          type="text"
           {...register("sla")}
-          className="w-18 h-10 focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg"
+          className="w-20 h-10 focus:outline-hc-green-500 bg-white text-black rounded px-2 py-2 text-lg"
           defaultValue="1"
-          min={1}
-          max={100}
         />
         <label className="text-xl ml-1">%</label>
         {errors.sla && (

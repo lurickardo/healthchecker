@@ -62,7 +62,7 @@ export class HealthckeckProxyProvider {
 	public async createScheduleRequest(
 		schedule: Schedule,
 	): Promise<DefaultResponse> {
-		try {			
+		try {
 			const config: AxiosRequestConfig = {
 				method: "POST",
 				url: `${this.baseURL}/v1/healthcheck/schedule/request`,
@@ -78,6 +78,38 @@ export class HealthckeckProxyProvider {
 				success: true,
 				data: response.data.data,
 				status: response.status,
+			};
+		} catch (error: any) {
+			if (axios.isAxiosError(error)) {
+				return {
+					success: false,
+					message:
+						error.response?.data?.message ||
+						"An error occurred during the request.",
+					status: error.response?.data?.statusCode,
+				};
+			}
+
+			return {
+				success: false,
+				message: "An unexpected error occurred.",
+			};
+		}
+	}
+
+	public async deleteScheduleRequest(
+		scheduleId: string,
+	): Promise<DefaultResponse> {
+		try {
+			const config: AxiosRequestConfig = {
+				method: "DELETE",
+				url: `${this.baseURL}/v1/healthcheck/${scheduleId}`,
+			};
+
+			await axios(config);
+
+			return {
+				success: true,
 			};
 		} catch (error: any) {
 			if (axios.isAxiosError(error)) {
