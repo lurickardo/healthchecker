@@ -23,43 +23,68 @@ export default function SyntheticTests() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<ResponseRecord[]>([]);
   const [currentSla, setCurrentSla] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const th = ["Status", "Date", "Run Type", "Status Code", "Actions"];
 
   const { slaStatus, slaPercent } = calculateSla(data, currentSla);
 
-  const handleFilterResult = (result: {
-    data: ResponseRecord[];
-    sla: number;
-  }) => {
+  const handleFilterResult = (result: any) => {
     setData(result.data);
     setCurrentSla(result.sla);
+    const totalRecords = result.total || 0;
+    setTotalPages(Math.ceil(totalRecords / 8) + 1);
+  };
+
+  const fetchPageData = async (page: number) => {
+    setLoading(true);
+    const provider = new HealthcheckProxyProvider();
+    try {
+      const response = await provider.listResponses({
+        from: "",
+        to: "",
+        quickInterval: "1d",
+        limit: 8,
+        skip: (page - 1) * 8,
+      });
+      handleFilterResult({
+        data: response.data,
+        sla: 1,
+        total: response.total,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAllDataForExport = async () => {
+    setLoading(true);
+    const provider = new HealthcheckProxyProvider();
+    try {
+      const response = await provider.listResponses({
+        from: "",
+        to: "",
+        quickInterval: "1d",
+        limit: 100000,
+        skip: 0,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching all data for export:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchInitialData = async () => {
-      setLoading(true);
-      const provider = new HealthcheckProxyProvider();
-      try {
-        const response = await provider.listResponses({
-          from: "",
-          to: "",
-          quickInterval: "1d",
-          limit: 10,
-          skip: 0,
-        });
-        handleFilterResult({ data: response.data, sla: 1 });
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchPageData(currentPage);
+  }, [currentPage]);
 
-    fetchInitialData();
-  }, []);
-
-  const handleExport = () => {
+  const handleExport = async () => {
     const headers = [
       "Status",
       "Relative Date",
@@ -68,7 +93,8 @@ export default function SyntheticTests() {
       "Run Type",
       "Status Code",
     ];
-    const rows = data.map((item) => {
+    const allData = await fetchAllDataForExport();
+    const rows = allData.map((item: any) => {
       const passed = item.response?.status < 300;
       const statusText = passed ? "PASSED" : "FAILED";
       const statusCode = item.response?.status;
@@ -115,6 +141,7 @@ export default function SyntheticTests() {
           colSpan={5}
           className="px-12 py-4 whitespace-nowrap text-center"
         >
+          No data available
         </td>,
       ],
     ];
@@ -134,25 +161,33 @@ export default function SyntheticTests() {
       return [
         <td
           key={`status-${idx}`}
-          className=" px-12 py-4 whitespace-nowrap font-bold"
+          className="px-12 py-3 whitespace-nowrap font-bold"
         >
           <span className={`${statusColor} w-max p-1 rounded`}>
             {statusText}
           </span>
         </td>,
-        <td key={`date-${idx}`} className="px-12 py-4 whitespace-nowrap">
+        <td key={`date-${idx}`} className="px-12 py-[1rem] whitespace-nowrap">
           <span className="font-bold">{relative}</span> | <span>{date}</span> |{" "}
           <span className="font-bold">{time}</span>
         </td>,
-        <td key={`runtype-${idx}`} className="px-12 py-4 whitespace-nowrap">
+        <td
+          key={`runtype-${idx}`}
+          className="px-12 py-[1rem] whitespace-nowrap"
+        >
           <span className="font-bold">Scheduled</span>
         </td>,
-        <td key={`statusCode-${idx}`} className={`px-12 py-4 whitespace-nowrap ${statusCode < 300 ? 'text-green-400' : 'text-red-400'}`}>
+        <td
+          key={`statusCode-${idx}`}
+          className={`px-12 py-[1rem] whitespace-nowrap ${
+            statusCode < 300 ? "text-green-400" : "text-red-400"
+          }`}
+        >
           <span className="font-bold">{statusCode}</span>
         </td>,
         <td
           key={`actions-${idx}`}
-          className="px-12 py-4 whitespace-nowrap space-x-6"
+          className="px-12 py-[1rem] whitespace-nowrap space-x-6"
         >
           <Button
             label=""
@@ -190,6 +225,25 @@ export default function SyntheticTests() {
       <Table className="h-table mt-6" th={th} trs={trs} />
       <Footer>
         <Sla status={slaStatus} percent={slaPercent} />
+        <div className="flex justify-between items-center mt-4">
+          <Button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            label="Previous"
+            className="flex justify-center items-center px-4 py-2 mx-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"
+          />
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            label="Next"
+            className="flex justify-center items-center px-4 py-2 mx-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"
+          />
+        </div>
         <Button
           icon={<Download width={24} height={24} aria-hidden="true" />}
           label="Export"

@@ -24,7 +24,7 @@ export default function Filter({
   onSearchResult,
   setLoading,
 }: {
-  onSearchResult: (result: { data: any; sla: number }) => void;
+  onSearchResult: any;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }) {
   const {
@@ -49,10 +49,14 @@ export default function Filter({
         from: data.from,
         to: data.to,
         quickInterval: data.timeInterval,
-        limit: 10,
+        limit: 8,
         skip: 0,
       });
-      onSearchResult({ data: response.data, sla: Number(data.sla) });
+      onSearchResult({
+        data: response.data,
+        sla: Number(data.sla),
+        total: response.total || 0,
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

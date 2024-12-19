@@ -3,9 +3,10 @@ import { env } from "./config/env";
 import { queues } from "./app.module";
 import { DatabaseInitializer } from "./database/couchdb/database.initializer";
 import { scheduleManager } from "./v1/modules/schedule/schedule.manager";
+import { createConnection } from "./provider/amqp.provider";
 
 async function bootstrap(): Promise<void> {
-	const connection = await amqp.connect(env.amqp.amqpUrl);
+	const connection = await createConnection(amqp, env.amqp.amqpUrl);
 	const channel = await connection.createChannel();
 
 	await channel.assertExchange(env.amqp.exchangeName, env.amqp.exchangeType, {
