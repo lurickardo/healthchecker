@@ -59,10 +59,12 @@ export default function SyntheticTests() {
   const [slaPercent, setSlaPercent] = useState<number>(100);
 
   const handleFilterResult = (result: any) => {
-    setData(result.data);
-    setCurrentSla(result.sla);
-    const totalRecords = result.total || 0;
-    setTotalPages(Math.ceil(totalRecords / 8) + 1);
+    if (result.data) {
+      setData(result.data);
+      setCurrentSla(result.sla);
+      const totalRecords = result.total || 0;
+      setTotalPages(Math.ceil(totalRecords / 8) + 1);
+    }
   };
 
   const fetchPageData = async (page: number) => {
@@ -102,7 +104,7 @@ export default function SyntheticTests() {
       setSlaStatus(slaStatus);
       setSlaPercent(slaPercent);
     } catch (error) {
-      console.error("Error fetching data for SLA:", error);
+      console.log("Error fetching data for SLA:", error);
     }
   };
 
@@ -299,7 +301,7 @@ export default function SyntheticTests() {
         }
         button={
           <Link
-            href="/healthcheck/synthetictests/create"
+            href="/healthcheck/synthetic/tests/create"
             icon={<Plus width={24} height={24} aria-hidden="true" />}
             label="Create Test"
             className="flex justify-center items-center px-4 py-2 hover:bg-hc-black-200 border-2 border-hc-green-300 font-medium rounded text-center whitespace-nowrap"

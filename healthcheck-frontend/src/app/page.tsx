@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/healthcheck/synthetictests");
+    router.push("/healthcheck/synthetic/tests");
   }, []);
 
   return (
