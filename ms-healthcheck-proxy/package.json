@@ -44,11 +44,5 @@
 		"tsconfig-paths": "^4.2.0",
 		"tslib": "^2.7.0",
 		"typescript": "^5.5.4"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm install && npm run lint:check && npm run test:cov && npm run build",
-			"pre-push": "npm install && npm run lint:check && npm run test:cov && npm run build"
-		}
 	}
 }
