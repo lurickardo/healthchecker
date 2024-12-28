@@ -6,7 +6,10 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc",
+		"pipe": "npm run prebuild && npm run build && npm run postbuild",
+		"prebuild": "rm -rf dist/ tsconfig.tsbuildinfo",
+		"build": "npx tsc",
+		"postbuild": "cp package*.json dist/",
 		"start": "node -r ts-node/register --env-file=.env src/main.ts",
 		"dev": "ts-node-dev --respawn --transpile-only --env-file=.env src/main.ts",
 		"debug": "ts-node-dev --respawn --transpile-only --debug --env-file=.env src/main.ts",
