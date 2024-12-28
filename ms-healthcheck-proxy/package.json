@@ -7,9 +7,9 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"pipe": "bun run prebuild && bun run build && bun run postbuild",
+		"pipe": "npm run prebuild && npm run build && npm run postbuild",
 		"prebuild": "rm -rf dist/ node_modules/ *lock*",
-		"build": "bun install --omit-dev && tsc",
+		"build": "npm install --omit-dev && tsc",
 		"postbuild": "cp -r node_modules/ dist/ && cp package*.json dist/",
 		"test": "jest --runInBand --coverage --config ./test/jest.config.json",
 		"test:watch": "jest --runInBand --config ./test/jest.config.json --watch",
@@ -47,8 +47,8 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "bun install && bun run lint:check && bun run test:cov && bun run build",
-			"pre-push": "bun install && bun run lint:check && bun run test:cov && bun run build"
+			"pre-commit": "npm install && npm run lint:check && npm run test:cov && npm run build",
+			"pre-push": "npm install && npm run lint:check && npm run test:cov && npm run build"
 		}
 	}
 }

@@ -39,18 +39,18 @@ Each branch was created to exemplify synergistic implementations with the code b
 ## Installation
 
 ```bash
-$ bun install
+$ npm install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ bun run dev
+$ npm run dev
 
 # production
-$ bun run pipe
-$ bun run prd
+$ npm run pipe
+$ npm run prd
 ```
 
 ## Swagger

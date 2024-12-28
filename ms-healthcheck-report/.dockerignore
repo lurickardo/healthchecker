@@ -45,8 +45,6 @@ test/*
 
 ##
 *lock*
-.env
-.env_example
 Makefile
 biome.json
 .gitignore

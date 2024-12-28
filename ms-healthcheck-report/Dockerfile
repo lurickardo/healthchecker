@@ -1,19 +1,19 @@
-FROM node:22 AS build
-
-RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.1.26"
-
-ENV PATH="/root/.bun/bin:${PATH}"
+FROM node:22-alpine AS builder
 
 WORKDIR /app
+
+COPY package.json package-lock.json* ./
+
+RUN npm install --legacy-peer-deps
 
 COPY . .
 
-RUN npm run pipe
+RUN npm run build
 
-FROM node:22-alpine
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=build /app/dist /app
+COPY --from=builder /app/dist /app
 
-CMD ["node", "src/main.js"]
+CMD ["node", "main.js"]
