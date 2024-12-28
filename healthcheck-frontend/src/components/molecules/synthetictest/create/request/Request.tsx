@@ -118,7 +118,7 @@ export default function Request() {
         }
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        router.push("/healthcheck/synthetictests");
+        router.push("/healthcheck/synthetic/tests");
       }
     } catch (error: any) {
       if (error) {

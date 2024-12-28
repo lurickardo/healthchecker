@@ -12,7 +12,7 @@ interface DefaultResponse {
 	skip?: number;
 }
 
-export class HealthcheckProxyProvider {
+export class HealthcheckReportProvider {
 	private baseURL: string;
 
 	constructor() {

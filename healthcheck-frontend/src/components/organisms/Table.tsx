@@ -28,14 +28,14 @@ export default function Table({ className, th, trs, buttons }: TableProps) {
             ))}
           </tr>
         </thead>
-        <tbody className="text-lg divide-y divide-hc-black-300 text-center">
+        <tbody className="text-lg divide-y divide-hc-black-300 divide-y-reverse text-center">
           {trs.map((tds, rowKey) => (
-            <tr key={rowKey}>
+            <tr key={rowKey} className="border-y border-hc-black-300">
               {tds.map((td, colKey) =>
                 typeof td === "string" ? (
                   <td
                     key={`${rowKey}-${colKey}`}
-                    className=" px-12 py-4 whitespace-nowrap"
+                    className="px-12 py-4 whitespace-nowrap "
                   >
                     {td}
                   </td>

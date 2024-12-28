@@ -38,7 +38,7 @@ export class ResponseService {
 
 		let selector: Partial<ResponseEntity> = {};
 
-		if (from && to) {			
+		if (from && to) {
 			selector.datetime = {
 				$gte: new Date(from).toISOString(),
 				$lte: new Date(to).toISOString(),

@@ -35,6 +35,7 @@ export class ResponseRepository {
 			selector: { ...selector },
 			limit: limit,
 			skip: skip,
+			use_index: "datetime",
 		};
 		const result = await this.db.find(query);
 		return result.docs;
@@ -44,17 +45,16 @@ export class ResponseRepository {
 		try {
 			const query = {
 				selector: { ...selector },
-				use_index: "_all_docs"
+				use_index: "datetime",
+				fields: ["_id"],
 			};
 			const result = await this.db.find(query);
-	
 			return result.docs.length;
 		} catch (error) {
 			console.error("Error counting documents:", error);
 			throw error;
 		}
 	}
-	
 
 	public async create(
 		entity: Partial<ResponseEntity>,

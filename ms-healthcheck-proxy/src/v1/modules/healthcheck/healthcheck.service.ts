@@ -33,7 +33,7 @@ export class HealthcheckService {
 
 	public async createScheduleRequest(
 		createScheduleRequest: CreateScheduleRequest,
-	) {		
+	) {
 		const rabbitmqProvider = new RabbitmqProvider();
 		await rabbitmqProvider.sendMessage(
 			env.amqp.queues.inputCreateScheduleRequest,
@@ -46,6 +46,11 @@ export class HealthcheckService {
 	public async remove(id: string) {
 		if (!id)
 			throw httpException("Id healthcheck not found.", HttpStatus.NOT_FOUND);
+		const rabbitmqProvider = new RabbitmqProvider();
+		await rabbitmqProvider.sendMessage(
+			env.amqp.queues.inputRemoveScheduleRequest,
+			{ _id: id },
+		);
 		return { message: "User successfully removed" };
 	}
 }

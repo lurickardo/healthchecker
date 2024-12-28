@@ -12,17 +12,22 @@ const options: optionsInterface[] = [
   {
     key: "dashboard",
     label: "Dashboard",
-    href: "/healthcheck/dashboard",
+    href: "/healthcheck/synthetic/dashboard",
   },
   {
-    key: "synthetictests",
-    label: "Systhetic Tests",
-    href: "/healthcheck/synthetictests",
+    key: "tests",
+    label: "Tests",
+    href: "/healthcheck/synthetic/tests",
   },
   {
     key: "variables",
     label: "Variables",
-    href: "/healthcheck/variables",
+    href: "/healthcheck/synthetic/variables",
+  },
+  {
+    key: "requestvariables",
+    label: "Request Variables",
+    href: "/healthcheck/synthetic/requestvariables",
   },
 ];
 

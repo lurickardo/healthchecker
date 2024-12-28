@@ -1,5 +1,7 @@
+import { SlaStatus } from "@/@interfaces/sla";
+
 export interface IFooter {
-  status: "VIOLATED" | "PASSED";
+  status: SlaStatus;
   percent: number;
 }
 

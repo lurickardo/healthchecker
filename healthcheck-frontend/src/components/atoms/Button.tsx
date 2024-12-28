@@ -6,6 +6,7 @@ interface LinkProps {
   href?: string;
   className?: string;
   isSubmitting?: boolean;
+  disabled?: boolean;
   children?: React.ReactNode;
   onClick?: () => void;
 }
@@ -17,6 +18,7 @@ export default function Button({
   className,
   icon,
   isSubmitting,
+  disabled,
   children,
   onClick,
 }: LinkProps) {
@@ -27,7 +29,7 @@ export default function Button({
       className={`px-2 py-2 text-lg space-x-2 cursor-pointer h-10 ${
         className || ""
       }`}
-      disabled={isSubmitting}
+      disabled={disabled || isSubmitting}
       onClick={onClick}
     >
       {children ? (
