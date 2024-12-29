@@ -7,7 +7,7 @@
 **HealthChecker** is a tool designed to implement synthetic tests for your services using your own infrastructure, enabling reliable SLA compliance monitoring. With HealthChecker, you can schedule periodic checks for endpoints and analyze their availability and performance, all within your infrastructure.
 
 ## Explanatory video
-https://www.youtube.com/watch?v=Q1NAFaF6lls
+https://www.youtube.com/watch?v=1yRw1hga6k4
 
 ## Table of Contents
 
