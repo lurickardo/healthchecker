@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Template>
-        <>ssfasfasfsafas</>
+        <></>
       </Template>
     </>
   );
