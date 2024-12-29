@@ -54,6 +54,7 @@ export default function Filter({
         },
         {
           from: data.from,
+          sla: Number(data.sla),
           to: data.to,
           quickInterval: data.timeInterval,
         }

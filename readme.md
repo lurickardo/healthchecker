@@ -1,6 +1,13 @@
 # HealthChecker
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e2917402-5e0e-42c4-a311-6968b1ce163e" alt="logo" style="height: 180px; width: 150px;">
+</p>
+
 **HealthChecker** is a tool designed to implement synthetic tests for your services using your own infrastructure, enabling reliable SLA compliance monitoring. With HealthChecker, you can schedule periodic checks for endpoints and analyze their availability and performance, all within your infrastructure.
+
+## Explanatory video
+https://www.youtube.com/watch?v=Q1NAFaF6lls
 
 ## Table of Contents
 
@@ -28,7 +35,7 @@ HealthChecker's purpose is to simplify the creation, management, and monitoring 
 
 The following diagram illustrates the HealthChecker's workflow:
 
-![healthcheck](https://github.com/user-attachments/assets/e2f67f78-ca28-4a8d-96ab-802da9947d85)
+![healthcheck](https://github.com/user-attachments/assets/34a5cdd5-55a8-47d3-a497-b43455f4d753)
 
 ## Cron Concept
 

@@ -48,6 +48,7 @@ export default function SyntheticTests() {
     duration: 10000,
   });
   const [filters, setFilters] = useState({
+    sla: 1,
     from: "",
     to: "",
     quickInterval: "1d",
@@ -100,7 +101,7 @@ export default function SyntheticTests() {
         limit: 100000,
         skip: 0,
       });
-      const { slaStatus, slaPercent } = calculateSla(response.data, 1);
+      const { slaStatus, slaPercent } = calculateSla(response.data, filters.sla);
       setSlaStatus(slaStatus);
       setSlaPercent(slaPercent);
     } catch (error) {
