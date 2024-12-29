@@ -10,7 +10,7 @@
 		"pipe": "npm run prebuild && npm run build && npm run postbuild",
 		"prebuild": "rm -rf dist/ tsconfig.tsbuildinfo",
 		"build": "npm install --omit-dev && npx tsc",
-		"postbuild": "cp -rf package*.json node_modules dist/",
+		"postbuild": "cp -rf package*.json node_modules .env dist/",
 		"prd": "node dist/src/main.js",
 		"dev": "ts-node-dev --respawn --transpile-only --env-file=.env src/main.ts",
 		"test": "jest --runInBand --coverage --config ./test/jest.config.json",

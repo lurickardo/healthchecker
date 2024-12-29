@@ -4,75 +4,99 @@ services:
     container_name: couchdb
     restart: always
     ports:
-      - "5984:5984"
+      - "5984:5984" # Expondo CouchDB para acesso externo
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=admin123
+      - TZ=America/Sao_Paulo
     volumes:
       - couchdb_data:/opt/couchdb/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5984/_up"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:3.10-management-alpine
     container_name: rabbitmq
     restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672:5672"   # Porta para conexões AMQP (usuário/administração de filas)
+      - "15672:15672" # Porta para interface de administração
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin123
+      - TZ=America/Sao_Paulo
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/mnesia
-
-  qs-cron-healthcheck:
-    build:
-      context: ./qs-cron-healthcheck
-      dockerfile: Dockerfile
-    container_name: qs-cron-healthcheck
-    restart: unless-stopped
-    ports:
-      - "3001:3001"
-    env_file:
-      - ./qs-cron-healthcheck/.env
-    volumes:
-      - ./qs-cron-healthcheck:/app
-
-  ms-healthcheck-report:
-    build:
-      context: ./ms-healthcheck-report
-      dockerfile: Dockerfile
-    container_name: ms-healthcheck-report
-    restart: unless-stopped
-    ports:
-      - "3002:3002"
-    env_file:
-      - ./ms-healthcheck-report/.env
-    volumes:
-      - ./ms-healthcheck-report:/app
-
-  ms-healthcheck-proxy:
-    build:
-      context: ./ms-healthcheck-proxy
-      dockerfile: Dockerfile
-    container_name: ms-healthcheck-proxy
-    restart: unless-stopped
-    ports:
-      - "3003:3003"
-    env_file:
-      - ./ms-healthcheck-proxy/.env
-    volumes:
-      - ./ms-healthcheck-proxy:/app
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   healthcheck-frontend:
     build:
       context: ./healthcheck-frontend
       dockerfile: Dockerfile
     container_name: healthcheck-frontend
-    restart: unless-stopped
+    depends_on:
+      - couchdb
+      - rabbitmq
     ports:
       - "3000:3000"
-    volumes:
-      - ./healthcheck-frontend:/app
+    environment:
+      - TZ=America/Sao_Paulo
+
+  ms-healthcheck-proxy:
+    build:
+      context: ./ms-healthcheck-proxy
+      dockerfile: Dockerfile
+    container_name: ms-healthcheck-proxy
+    depends_on:
+      couchdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./ms-healthcheck-proxy/.env
+    environment:
+      - TZ=America/Sao_Paulo
+
+  ms-healthcheck-report:
+    build:
+      context: ./ms-healthcheck-report
+      dockerfile: Dockerfile
+    container_name: ms-healthcheck-report
+    depends_on:
+      couchdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "3002:3002"
+    env_file:
+      - ./ms-healthcheck-report/.env
+    environment:
+      - TZ=America/Sao_Paulo
+
+  qs-cron-healthcheck:
+    build:
+      context: ./qs-cron-healthcheck
+      dockerfile: Dockerfile
+    container_name: qs-cron-healthcheck
+    depends_on:
+      couchdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - ./qs-cron-healthcheck/.env
+    environment:
+      - TZ=America/Sao_Paulo
 
 volumes:
   couchdb_data:
